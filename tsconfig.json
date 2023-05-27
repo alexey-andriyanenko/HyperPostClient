@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ESNext",
+    "jsx": "react-jsx",
+    "strict": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "baseUrl": "./"
+  },
+  "include": ["./"],
+  "exclude": ["node_modules", "dist"],
+  "ts-node": {
+    "compilerOptions": {
+        "module": "CommonJS"
+    }
+  }
+}
