@@ -8,18 +8,19 @@ const config: webpack.Configuration = {
   entry: path.resolve(__dirname, "src", "index.tsx"),
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.[contenthash].js",
+    filename: "[file].[contenthash].js",
     clean: true,
   },
   devServer: {
     port: 9000,
     open: false,
     hot: true,
+    historyApiFallback: true,
   },
   mode: "development",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
-    modules: [path.resolve(__dirname, "src"), "node_modules"],
+    modules: ["src", "node_modules"],
   },
   module: {
     rules: [
