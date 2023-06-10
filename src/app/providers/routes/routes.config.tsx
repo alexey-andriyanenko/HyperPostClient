@@ -16,4 +16,10 @@ export const AUTH_ROUTE: IAppRoute = {
   element: <AuthLazy />,
 };
 
-export const routes = createBrowserRouter([AUTH_ROUTE]);
+export const FALLBACK_ROUTE: IAppRoute = {
+  path: "*",
+  auth: false,
+  element: <div>404</div>,
+};
+
+export const routes = createBrowserRouter([AUTH_ROUTE, FALLBACK_ROUTE]);

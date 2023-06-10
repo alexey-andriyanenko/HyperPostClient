@@ -1,17 +1,7 @@
 import { HttpMessage } from "./http-message";
 
 export class HttpClient {
-  private _token = "";
-
   constructor(private _baseUrl: string) {}
-
-  public get token() {
-    return this._token;
-  }
-
-  public set token(value: string) {
-    this._token = value;
-  }
 
   public get<Response, Path extends string = string>(url: Path) {
     return HttpMessage.create<never, Response, "get", Path>((this._baseUrl + url) as Path, "get");

@@ -1,3 +1,5 @@
+import { ExtractParams } from "./http-message.types";
+
 export class HttpMessage<
   RequestBody,
   ResponseBody,
@@ -13,7 +15,7 @@ export class HttpMessage<
     Response,
     Method extends "get" | "post" | "put" | "delete",
     Path extends string = string,
-  >(url: Path, method: Method): Omit<HttpMessage<Request, Response, Method, Path>, "send"> {
+  >(url: Path, method: Method): HttpMessage<Request, Response, Method, Path> {
     return new HttpMessage<Request, Response, Method, Path>(url, method);
   }
 
