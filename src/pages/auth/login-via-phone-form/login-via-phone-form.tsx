@@ -8,7 +8,7 @@ export const LoginViaPhoneForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<ILoginViaPhoneForm>({
     mode: "onSubmit",
   });
@@ -16,7 +16,13 @@ export const LoginViaPhoneForm = () => {
   const onSubmit = (data: ILoginViaPhoneForm) => {};
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      sx={{ mt: 1 }}
+      data-testid="login-via-phone-form"
+    >
       <TextField
         margin="normal"
         required
@@ -24,15 +30,15 @@ export const LoginViaPhoneForm = () => {
         id="phone"
         data-testid="phone"
         label="Phone"
-        placeholder="Enter phone"
+        placeholder="(123) 456-7890"
         type="tel"
         error={!!errors.phone}
         helperText={errors.phone?.message}
         {...register("phone", {
           required: "Phone is required",
           pattern: {
-            value: /\S+@\S+\.\S+/,
-            message: "Please enter a valid email address",
+            value: /\([0-9]{3}\) [0-9]{3}-[0-9]{4}/,
+            message: "Please enter a valid phone number",
           },
         })}
       />
@@ -56,7 +62,7 @@ export const LoginViaPhoneForm = () => {
         variant="contained"
         data-testid="submit"
         sx={{ mt: 3, mb: 2 }}
-        disabled={!isValid || isSubmitting}
+        disabled={isSubmitting}
       >
         {isSubmitting ? (
           <CircularProgress size={24} sx={{ position: "absolute" }} data-testid="loader" />

@@ -2,7 +2,7 @@ export default {
   coverageProvider: "v8",
   moduleDirectories: ["<rootDir>", "node_modules", "src"],
   moduleFileExtensions: ["js", "ts", "tsx"],
-  testMatch: ["<rootDir>/src/**/login-via-email-form.spec.(ts|tsx)"],
+  testMatch: ["<rootDir>/src/**/login-via-phone-form.spec.(ts|tsx)"],
   rootDir: "./",
   roots: ["<rootDir>"],
   testEnvironment: "jest-environment-jsdom",

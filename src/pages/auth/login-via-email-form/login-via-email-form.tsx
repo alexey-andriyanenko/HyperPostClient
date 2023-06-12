@@ -26,7 +26,13 @@ export const LoginViaEmailForm = () => {
   const onSubmit = (data: ILoginViaEmailForm) => {};
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      sx={{ mt: 1 }}
+      data-testid="login-via-email-form"
+    >
       <TextField
         margin="normal"
         required

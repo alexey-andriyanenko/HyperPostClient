@@ -27,16 +27,25 @@ const Auth: React.FC = () => {
       {loginVariant === AuthEnum.LoginViaEmail && <LoginViaEmailForm />}
       {loginVariant === AuthEnum.LoginViaPhone && <LoginViaPhoneForm />}
 
-      <Grid container>
-        {loginVariant === AuthEnum.LoginViaEmail && (
-          <Button onClick={() => setLoginVariant(AuthEnum.LoginViaPhone)}> Login via phone </Button>
-        )}
-        {loginVariant === AuthEnum.LoginViaPhone && (
-          <Button onClick={() => setLoginVariant(AuthEnum.LoginViaEmail)}> Login via email </Button>
-        )}
+      {loginVariant === AuthEnum.LoginViaEmail && (
+        <Button
+          onClick={() => setLoginVariant(AuthEnum.LoginViaPhone)}
+          fullWidth
+          data-testid="login-via-phone-button"
+        >
+          Login via phone
+        </Button>
+      )}
 
-        <Button> Sign In </Button>
-      </Grid>
+      {loginVariant === AuthEnum.LoginViaPhone && (
+        <Button
+          onClick={() => setLoginVariant(AuthEnum.LoginViaEmail)}
+          fullWidth
+          data-testid="login-via-email-button"
+        >
+          Login via email
+        </Button>
+      )}
     </Container>
   );
 };
