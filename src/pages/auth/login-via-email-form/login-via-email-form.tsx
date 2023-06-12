@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  Avatar,
-  Box,
-  Button,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-  Icon,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Button, TextField, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 import { ILoginViaEmailForm } from "./login-via-email-form.types";
@@ -18,7 +8,7 @@ export const LoginViaEmailForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<ILoginViaEmailForm>({
     mode: "onSubmit",
   });
@@ -71,7 +61,7 @@ export const LoginViaEmailForm = () => {
         variant="contained"
         data-testid="submit"
         sx={{ mt: 3, mb: 2 }}
-        disabled={!isValid || isSubmitting}
+        disabled={isSubmitting}
       >
         {isSubmitting ? (
           <CircularProgress size={24} sx={{ position: "absolute" }} data-testid="loader" />
