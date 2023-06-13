@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Avatar, Box, Icon, Button, Grid } from "@mui/material";
+import { Container, Avatar, Box, Icon, Button } from "@mui/material";
 
 import { LoginViaEmailForm } from "./login-via-email-form";
 import { LoginViaPhoneForm } from "./login-via-phone-form";

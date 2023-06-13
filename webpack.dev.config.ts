@@ -20,7 +20,7 @@ const config: webpack.Configuration = {
   mode: "development",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
-    modules: ["src", "node_modules"],
+    modules: [__dirname, "node_modules"],
   },
   module: {
     rules: [

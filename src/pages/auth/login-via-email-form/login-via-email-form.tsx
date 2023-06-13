@@ -2,9 +2,12 @@ import React from "react";
 import { Box, Button, TextField, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 
+import { useStore } from "src/store";
+
 import { ILoginViaEmailForm } from "./login-via-email-form.types";
 
 export const LoginViaEmailForm = () => {
+  const userStore = useStore("user");
   const {
     register,
     handleSubmit,
@@ -13,7 +16,10 @@ export const LoginViaEmailForm = () => {
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: ILoginViaEmailForm) => {};
+  const onSubmit = async (data: ILoginViaEmailForm) => {
+    const id = await userStore.loginViaEmail(data);
+    await userStore.loadUser(id);
+  };
 
   return (
     <Box

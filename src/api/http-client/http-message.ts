@@ -1,4 +1,5 @@
 import { ExtractParams } from "./http-message.types";
+import { HttpClient } from "./http-client";
 
 export class HttpMessage<
   RequestBody,
@@ -50,6 +51,11 @@ export class HttpMessage<
   ): Promise<ResponseBody> {
     return new Promise((resolve, reject) => {
       this._request.open(this._method, this._url);
+
+      this._request.setRequestHeader("Content-Type", "application/json");
+
+      if (HttpClient.token)
+        this._request.setRequestHeader("Authorization", `Bearer ${HttpClient.token}`);
 
       this._request.onload = () => {
         if (this._request.status >= 200 && this._request.status < 300) {

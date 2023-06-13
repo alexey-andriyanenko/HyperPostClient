@@ -1,4 +1,6 @@
 import { httpClient } from "../http-client";
+
+import { IUser } from "src/models";
 import {
   IUserLoginViaEmailRequest,
   IUserLoginViaPhoneRequest,
@@ -7,11 +9,19 @@ import {
 
 class UserApiService {
   loginViaEmail(data: IUserLoginViaEmailRequest) {
-    return httpClient.post<IUserLoginViaEmailRequest, IUserLoginResponse>("/login").send(data);
+    return httpClient
+      .post<IUserLoginViaEmailRequest, IUserLoginResponse>("/users/login/email")
+      .send(data);
   }
 
   loginViaPhone(data: IUserLoginViaPhoneRequest) {
-    return httpClient.post<IUserLoginViaPhoneRequest, IUserLoginResponse>("/login").send(data);
+    return httpClient
+      .post<IUserLoginViaPhoneRequest, IUserLoginResponse>("/user/login/phone")
+      .send(data);
+  }
+
+  loadUser(id: number) {
+    return httpClient.get<IUser>("/users/:id").setRouteParams({ id }).send();
   }
 }
 
