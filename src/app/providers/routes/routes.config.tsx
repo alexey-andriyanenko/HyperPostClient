@@ -1,25 +1,28 @@
 import React from "react";
 import { RouteProps } from "react-router";
-import { createBrowserRouter } from "react-router-dom";
+import { Home } from "src/pages/home";
 
 const AuthLazy = React.lazy(() => import("../../../pages/auth"));
 
 export interface IAppRoute {
-  path: RouteProps["path"];
-  auth: boolean;
+  path: Required<RouteProps>["path"];
   element: RouteProps["element"];
 }
 
 export const AUTH_ROUTE: IAppRoute = {
   path: "/auth",
-  auth: false,
   element: <AuthLazy />,
 };
 
 export const FALLBACK_ROUTE: IAppRoute = {
   path: "*",
-  auth: false,
   element: <div>404</div>,
 };
 
-export const routes = createBrowserRouter([AUTH_ROUTE, FALLBACK_ROUTE]);
+export const HOME_ROUTE: IAppRoute = {
+  path: "/",
+  element: <Home />,
+};
+
+export const publicRoutes = [AUTH_ROUTE, FALLBACK_ROUTE];
+export const privateRoutes = [HOME_ROUTE];

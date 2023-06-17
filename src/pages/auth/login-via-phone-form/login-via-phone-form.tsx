@@ -1,10 +1,16 @@
 import React from "react";
 import { Box, Button, TextField, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+
+import { useStore } from "src/store";
+import { HOME_ROUTE } from "src/app/providers/routes";
 
 import { ILoginViaPhoneForm } from "./login-via-phone-form.types";
 
 export const LoginViaPhoneForm = () => {
+  const navigate = useNavigate();
+  const userStore = useStore("user");
   const {
     register,
     handleSubmit,
@@ -13,7 +19,16 @@ export const LoginViaPhoneForm = () => {
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: ILoginViaPhoneForm) => {};
+  const onSubmit = async (data: ILoginViaPhoneForm) => {
+    const res = await userStore.loginViaPhone(data);
+
+    if (res instanceof Error) {
+      console.error(res);
+      return;
+    }
+
+    navigate(HOME_ROUTE.path);
+  };
 
   return (
     <Box
@@ -32,14 +47,10 @@ export const LoginViaPhoneForm = () => {
         label="Phone"
         placeholder="(123) 456-7890"
         type="tel"
-        error={!!errors.phone}
-        helperText={errors.phone?.message}
-        {...register("phone", {
+        error={!!errors.phoneNumber}
+        helperText={errors.phoneNumber?.message}
+        {...register("phoneNumber", {
           required: "Phone is required",
-          pattern: {
-            value: /\([0-9]{3}\) [0-9]{3}-[0-9]{4}/,
-            message: "Please enter a valid phone number",
-          },
         })}
       />
       <TextField

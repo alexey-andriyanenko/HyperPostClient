@@ -4,7 +4,7 @@ export interface IUserLoginViaEmailRequest {
 }
 
 export interface IUserLoginViaPhoneRequest {
-  phone: string;
+  phoneNumber: string;
   password: string;
 }
 

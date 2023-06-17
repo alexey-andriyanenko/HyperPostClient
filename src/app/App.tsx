@@ -1,6 +1,7 @@
 import React from "react";
-import { RoutesProvider } from "./providers/routes";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+
+import { RoutesProvider } from "./providers/routes";
 
 export const App = () => {
   const theme = createTheme();

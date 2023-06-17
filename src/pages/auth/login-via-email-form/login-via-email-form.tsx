@@ -1,12 +1,15 @@
 import React from "react";
 import { Box, Button, TextField, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 import { useStore } from "src/store";
+import { HOME_ROUTE } from "src/app/providers/routes";
 
 import { ILoginViaEmailForm } from "./login-via-email-form.types";
 
 export const LoginViaEmailForm = () => {
+  const navigate = useNavigate();
   const userStore = useStore("user");
   const {
     register,
@@ -17,8 +20,13 @@ export const LoginViaEmailForm = () => {
   });
 
   const onSubmit = async (data: ILoginViaEmailForm) => {
-    const id = await userStore.loginViaEmail(data);
-    await userStore.loadUser(id);
+    const loginRes = await userStore.loginViaEmail(data);
+
+    if (loginRes instanceof Error) {
+      return;
+    }
+
+    navigate(HOME_ROUTE.path);
   };
 
   return (

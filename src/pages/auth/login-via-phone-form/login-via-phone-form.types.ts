@@ -1,4 +1,4 @@
 export interface ILoginViaPhoneForm {
-  phone: string;
+  phoneNumber: string;
   password: string;
 }

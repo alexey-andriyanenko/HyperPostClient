@@ -16,12 +16,16 @@ class UserApiService {
 
   loginViaPhone(data: IUserLoginViaPhoneRequest) {
     return httpClient
-      .post<IUserLoginViaPhoneRequest, IUserLoginResponse>("/user/login/phone")
+      .post<IUserLoginViaPhoneRequest, IUserLoginResponse>("/users/login/phone")
       .send(data);
   }
 
   loadUser(id: number) {
     return httpClient.get<IUser>("/users/:id").setRouteParams({ id }).send();
+  }
+
+  loadMe() {
+    return httpClient.get<IUser>("/users/me").send();
   }
 }
 

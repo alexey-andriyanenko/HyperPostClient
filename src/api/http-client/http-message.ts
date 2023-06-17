@@ -66,7 +66,12 @@ export class HttpMessage<
       };
 
       this._request.onerror = () => {
-        reject(JSON.parse(this._request.responseText));
+        try {
+          const result = JSON.parse(this._request.responseText);
+          reject(result);
+        } catch (e) {
+          reject("");
+        }
       };
 
       this._request.send(JSON.stringify(body));
