@@ -1,8 +1,18 @@
 import React, { memo } from "react";
-import { Paper } from "@mui/material";
+import { navItems } from "./app-sidebar.constants";
 
-import styles from "./app-sidebar.module.css";
+import { Container, Nav, Link } from "./app-sidebar.styles";
 
 export const AppSidebar = memo(() => {
-  return <Paper className={styles.container} data-testid="app-sidebar"></Paper>;
+  return (
+    <Container data-testid="app-sidebar" elevation={5}>
+      <Nav component="nav">
+        {navItems.map((item) => (
+          <Link key={item.path} variant="text" fullWidth href={item.path}>
+            {item.label}
+          </Link>
+        ))}
+      </Nav>
+    </Container>
+  );
 });
