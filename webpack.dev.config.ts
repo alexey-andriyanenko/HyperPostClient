@@ -3,6 +3,7 @@ import webpackDevServer from "webpack-dev-server";
 import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const config: webpack.Configuration = {
   entry: path.resolve(__dirname, "src", "index.tsx"),
@@ -31,12 +32,21 @@ const config: webpack.Configuration = {
           loader: "swc-loader",
         },
       },
+      {
+        test: /.css/,
+        include: path.resolve(__dirname, "src"),
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        exclude: /\node_modules/,
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "public", "index.html"),
       title: "HyperPost Dev",
+    }),
+    new MiniCssExtractPlugin({
+      filename: "styles/[name].[contenthash].css",
     }),
     new ForkTsCheckerWebpackPlugin(),
   ],

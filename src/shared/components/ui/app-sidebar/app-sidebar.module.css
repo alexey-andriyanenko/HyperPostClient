@@ -1,0 +1,7 @@
+.container {
+    width: 225px;
+    min-width: 225px;
+    max-width: 225px;
+    height: 100vh;
+    background-color: black;
+}

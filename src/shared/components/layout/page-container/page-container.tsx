@@ -1,5 +1,11 @@
 import React from "react";
-import { Box } from "@mui/material";
+
+import { Container } from "./page-container.styles";
+
 export const PageContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return <Box component="main"> {children} </Box>;
+  return (
+    <Container component="main" data-testid="page-container">
+      {children}
+    </Container>
+  );
 };

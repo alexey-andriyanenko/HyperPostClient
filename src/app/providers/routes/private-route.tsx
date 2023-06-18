@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router";
 
 import { useStore } from "src/store";
+import { AppLayout } from "src/shared/components/layout";
 
 import { AUTH_ROUTE } from "./routes.config";
 
@@ -18,5 +19,5 @@ export const PrivateRoute: React.FC<IPrivateRouteProps> = ({ children }) => {
   }, [userStore.loggedIn, userStore.user]);
 
   if (!userStore.loggedIn) return <Navigate to={AUTH_ROUTE.path} />;
-  return <>{children}</>;
+  return <AppLayout>{children}</AppLayout>;
 };
