@@ -1,11 +1,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import { PageHeader } from "./page-header";
+import { AppHeader } from "./app-header";
 
 describe("PageHeader", () => {
   it("should render successfully", () => {
-    const { baseElement } = render(<PageHeader />);
+    const { baseElement } = render(<AppHeader />);
     expect(baseElement).toBeTruthy();
   });
 });
