@@ -1,11 +1,11 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { BrowserRouter, Routes } from "react-router-dom";
 import { Route } from "react-router";
 
 import { PrivateRoute } from "./private-route";
 import { privateRoutes, publicRoutes } from "./routes.config";
 
-export const RoutesProvider: React.FC = () => {
+export const RoutesProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <BrowserRouter>
       <Routes>
@@ -20,6 +20,8 @@ export const RoutesProvider: React.FC = () => {
           />
         ))}
       </Routes>
+
+      {children}
     </BrowserRouter>
   );
 };

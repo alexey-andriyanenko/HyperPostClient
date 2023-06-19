@@ -2,7 +2,6 @@ import React from "react";
 
 import { AppSidebar, AppHeader } from "src/shared/components/ui";
 import { PageContainer } from "../page-container";
-import { PageContent } from "../page-content";
 
 import { Container } from "./app-layout.styles";
 
@@ -13,7 +12,7 @@ export const AppLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       <PageContainer>
         <AppHeader />
-        <PageContent> {children} </PageContent>
+        {children}
       </PageContainer>
     </Container>
   );

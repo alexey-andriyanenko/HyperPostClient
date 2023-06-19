@@ -1,6 +1,7 @@
 import React from "react";
 import { RouteProps } from "react-router";
 import { Home } from "src/pages/home";
+import Profile from "src/pages/profile";
 
 const AuthLazy = React.lazy(() => import("../../../pages/auth"));
 
@@ -24,5 +25,10 @@ export const HOME_ROUTE: IAppRoute = {
   element: <Home />,
 };
 
+export const PROFILE_ROUTE: IAppRoute = {
+  path: "/profile",
+  element: <Profile />,
+};
+
 export const publicRoutes = [AUTH_ROUTE, FALLBACK_ROUTE];
-export const privateRoutes = [HOME_ROUTE];
+export const privateRoutes = [HOME_ROUTE, PROFILE_ROUTE];

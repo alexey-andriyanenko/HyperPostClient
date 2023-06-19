@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 
 import { RoutesProvider } from "src/app/providers/routes";
+import { BrowserRouter } from "react-router-dom";
 
 const TestProviders: React.FC<React.PropsWithChildren> = ({ children }) => {
   const theme = createTheme();
@@ -10,8 +11,7 @@ const TestProviders: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <RoutesProvider />
-      {children}
+      <BrowserRouter>{children}</BrowserRouter>
     </ThemeProvider>
   );
 };

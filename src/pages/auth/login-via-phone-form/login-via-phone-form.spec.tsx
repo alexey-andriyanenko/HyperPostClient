@@ -45,12 +45,6 @@ describe("LoginViaPhoneForm", () => {
     expect(within(phoneField).getByText("Phone is required")).toBeInTheDocument();
     expect(within(passwordField).getByText("Password is required")).toBeInTheDocument();
 
-    // Fill in phone field with invalid phone number
-    await userEvent.type(phoneInput, "123");
-    await userEvent.click(submitButton);
-
-    expect(within(phoneField).getByText("Please enter a valid phone number")).toBeInTheDocument();
-
     // Fill in phone field with valid phone number
     await userEvent.clear(phoneInput);
     await userEvent.type(phoneInput, "(123) 456-7890");

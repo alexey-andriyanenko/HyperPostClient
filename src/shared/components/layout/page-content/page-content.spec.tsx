@@ -5,8 +5,8 @@ import { PageContent } from "./page-content";
 
 describe("PageContent", () => {
   it("should render successfully", () => {
-    const { baseElement } = render(<PageContent />);
-    expect(baseElement).toBeTruthy();
+    const { container } = render(<PageContent />);
+    expect(container).not.toBeNull();
   });
 
   it("renders children", () => {

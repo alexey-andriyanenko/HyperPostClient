@@ -2,6 +2,8 @@ import React from "react";
 import { Icon } from "@mui/material";
 import { useNavigate } from "react-router";
 
+import { PROFILE_ROUTE } from "src/app/providers/routes";
+
 import { Header, ProfileButton } from "./app-header.styles";
 
 export const AppHeader = () => {
@@ -9,7 +11,7 @@ export const AppHeader = () => {
 
   const handleProfile = () => {
     // TODO: replace this with PROFILE_AUTH.path
-    navigate("/profile");
+    navigate(PROFILE_ROUTE.path);
   };
 
   return (
