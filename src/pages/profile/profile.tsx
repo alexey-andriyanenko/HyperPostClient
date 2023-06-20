@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
+
 import { PageContent } from "src/shared/components/layout";
 import { Form } from "./form";
 

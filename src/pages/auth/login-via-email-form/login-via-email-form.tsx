@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
 import { useStore } from "src/store";
+import { EMAIL_PATTERN } from "src/constants";
 import { HOME_ROUTE } from "src/app/providers/routes";
 
 import { ILoginViaEmailForm } from "./login-via-email-form.types";
@@ -50,7 +51,7 @@ export const LoginViaEmailForm = () => {
         {...register("email", {
           required: "Email is required",
           pattern: {
-            value: /\S+@\S+\.\S+/,
+            value: EMAIL_PATTERN,
             message: "Please enter a valid email address",
           },
         })}

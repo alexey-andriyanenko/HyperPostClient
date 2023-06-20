@@ -4,7 +4,7 @@ export const Container = styled(Box)(() => ({
   display: "flex",
   flexFlow: "row wrap",
   justifyContent: "space-between",
-  alignItems: "center",
+  alignItems: "flex-start",
   columnGap: "16px",
   rowGap: "24px",
   "& > div": {

@@ -1,3 +1,3 @@
-export interface IStoreInterface {
+export interface IStore {
   logout: () => void;
 }

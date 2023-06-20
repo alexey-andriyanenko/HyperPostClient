@@ -1,4 +1,4 @@
 import { rootStore } from "./root.store";
-import { TStoreName } from "./root.store.types";
+import { IRootStores } from "./root.store.types";
 
-export const useStore = (name: TStoreName) => rootStore.getStore(name);
+export const useStore = <T extends keyof IRootStores>(name: T) => rootStore.getStore<T>(name);

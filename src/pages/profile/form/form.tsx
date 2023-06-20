@@ -1,31 +1,37 @@
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { IProfileForm } from "./form.types";
+import { observer } from "mobx-react-lite";
+
 import { Button, TextField } from "@mui/material";
 
 import { useStore } from "src/store";
-
+import { EMAIL_PATTERN, ROLES_NAMES } from "src/constants";
+import { RolesEnum } from "src/models";
 import { Container } from "./form.styles";
-import { observer } from "mobx-react-lite";
+import { IProfileForm } from "./form.types";
 
 export const Form: React.FC = observer(() => {
   const userStore = useStore("user");
-  const { handleSubmit, register, control, setValue } = useForm<IProfileForm>({
+
+  const { handleSubmit, reset, control, setValue, formState } = useForm<IProfileForm>({
+    mode: "onChange",
     defaultValues: {
       firstName: "",
       lastName: "",
       email: "",
-      roleId: 0,
+      roleId: RolesEnum.Client,
     },
   });
 
   useEffect(() => {
     if (!userStore.user) return;
 
-    setValue("firstName", userStore.user?.firstName);
-    setValue("lastName", userStore.user?.lastName);
-    setValue("email", userStore.user?.email);
-    setValue("roleId", userStore.user?.roleId);
+    reset({
+      firstName: userStore.user.firstName,
+      lastName: userStore.user.lastName,
+      email: userStore.user.email,
+      roleId: userStore.user.roleId,
+    });
   }, [userStore.user]);
 
   return (
@@ -33,6 +39,10 @@ export const Form: React.FC = observer(() => {
       <Controller
         name="firstName"
         control={control}
+        rules={{
+          required: { value: true, message: "First Name is required" },
+          maxLength: { value: 30, message: "Max Length: 30" },
+        }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -41,12 +51,18 @@ export const Form: React.FC = observer(() => {
             placeholder="Enter First Name"
             data-testid="first-name"
             fullWidth
+            error={!!formState.errors.firstName}
+            helperText={formState.errors.firstName?.message}
           />
         )}
       />
       <Controller
         name="lastName"
         control={control}
+        rules={{
+          required: { value: true, message: "Last Name is required" },
+          maxLength: { value: 30, message: "Max Length: 30" },
+        }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -55,6 +71,8 @@ export const Form: React.FC = observer(() => {
             placeholder="Enter Last Name"
             data-testid="last-name"
             fullWidth
+            error={!!formState.errors.lastName}
+            helperText={formState.errors.lastName?.message}
           />
         )}
       />
@@ -62,6 +80,11 @@ export const Form: React.FC = observer(() => {
       <Controller
         name="email"
         control={control}
+        rules={{
+          required: { value: true, message: "Email is required" },
+          pattern: { value: EMAIL_PATTERN, message: "Please enter a valid email address" },
+          maxLength: { value: 50, message: "Max Length: 50" },
+        }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -70,6 +93,8 @@ export const Form: React.FC = observer(() => {
             placeholder="Enter Email"
             data-testid="email"
             fullWidth
+            error={!!formState.errors.email}
+            helperText={formState.errors.email?.message}
           />
         )}
       />
@@ -80,6 +105,7 @@ export const Form: React.FC = observer(() => {
         render={({ field }) => (
           <TextField
             {...field}
+            value={ROLES_NAMES[field.value]}
             required
             label="Role"
             placeholder="Enter Role"
@@ -90,7 +116,13 @@ export const Form: React.FC = observer(() => {
         )}
       />
 
-      <Button color="primary" variant="contained" fullWidth>
+      <Button
+        color="primary"
+        variant="contained"
+        data-testid="submit-button"
+        fullWidth
+        disabled={!formState.isDirty || !formState.isValid}
+      >
         Submit
       </Button>
     </Container>
