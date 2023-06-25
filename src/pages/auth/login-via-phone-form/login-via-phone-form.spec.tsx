@@ -77,15 +77,12 @@ describe("LoginViaPhoneForm", () => {
 
     const submitButton = getByTestId("submit");
 
-    // Fill in email field with valid email
     await userEvent.type(phoneInput, "111111");
     expect(submitButton).not.toBeDisabled();
 
-    // Fill in password
     await userEvent.type(passwordInput, "123456");
     expect(submitButton).not.toBeDisabled();
 
-    // Submit form
     await userEvent.click(submitButton);
     expect(submitButton).not.toBeDisabled();
   });
@@ -107,15 +104,12 @@ describe("LoginViaPhoneForm", () => {
 
     const submitButton = getByTestId("submit");
 
-    // Fill in email field with valid email
     await userEvent.type(phoneInput, "111111");
     expect(submitButton).not.toBeDisabled();
 
-    // Fill in password
     await userEvent.type(passwordInput, "123456");
     expect(submitButton).not.toBeDisabled();
 
-    // Submit form
     await userEvent.click(submitButton);
     expect(submitButton).not.toBeDisabled();
 
