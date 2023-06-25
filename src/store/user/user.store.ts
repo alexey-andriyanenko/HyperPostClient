@@ -21,33 +21,23 @@ export class UserStore implements IStore {
     makeAutoObservable(this);
   }
 
-  async loginViaEmail(data: IUserLoginViaEmailRequest): Promise<number | Error> {
-    try {
-      const res = await userApiService.loginViaEmail(data);
+  async loginViaEmail(data: IUserLoginViaEmailRequest): Promise<number> {
+    const res = await userApiService.loginViaEmail(data);
 
-      HttpClient.token = res.accessToken;
-      this._storeToken(res.accessToken);
-      this._loggedIn = true;
+    HttpClient.token = res.accessToken;
+    this._storeToken(res.accessToken);
+    this._loggedIn = true;
 
-      return res.id;
-    } catch (e) {
-      console.error(e);
-      return e as Error;
-    }
+    return res.id;
   }
-  async loginViaPhone(data: IUserLoginViaPhoneRequest): Promise<number | Error> {
-    try {
-      const res = await userApiService.loginViaPhone(data);
+  async loginViaPhone(data: IUserLoginViaPhoneRequest): Promise<number> {
+    const res = await userApiService.loginViaPhone(data);
 
-      HttpClient.token = res.accessToken;
-      this._storeToken(res.accessToken);
-      this._loggedIn = true;
+    HttpClient.token = res.accessToken;
+    this._storeToken(res.accessToken);
+    this._loggedIn = true;
 
-      return res.id;
-    } catch (e) {
-      console.error(e);
-      return e as Error;
-    }
+    return res.id;
   }
 
   async loadMe() {

@@ -15,19 +15,31 @@ export const LoginViaEmailForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    setError,
+    formState: { errors, isSubmitting, isValid },
   } = useForm<ILoginViaEmailForm>({
     mode: "onSubmit",
   });
 
   const onSubmit = async (data: ILoginViaEmailForm) => {
-    const loginRes = await userStore.loginViaEmail(data);
+    try {
+      await userStore.loginViaEmail(data);
+      navigate(HOME_ROUTE.path);
+    } catch (error) {
+      if (error instanceof XMLHttpRequest) {
+        if (error.status === 401) {
+          setError("email", {
+            type: "manual",
+            message: "Invalid email or password",
+          });
+          setError("password", {
+            type: "manual",
+          });
+        }
+      }
 
-    if (loginRes instanceof Error) {
-      return;
+      console.error(error);
     }
-
-    navigate(HOME_ROUTE.path);
   };
 
   return (

@@ -14,20 +14,31 @@ export const LoginViaPhoneForm = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ILoginViaPhoneForm>({
     mode: "onSubmit",
   });
 
   const onSubmit = async (data: ILoginViaPhoneForm) => {
-    const res = await userStore.loginViaPhone(data);
+    try {
+      await userStore.loginViaPhone(data);
+      navigate(HOME_ROUTE.path);
+    } catch (error) {
+      if (error instanceof XMLHttpRequest) {
+        if (error.status === 401) {
+          setError("phoneNumber", {
+            type: "manual",
+            message: "Invalid phone number or password",
+          });
+          setError("password", {
+            type: "manual",
+          });
+        }
+      }
 
-    if (res instanceof Error) {
-      console.error(res);
-      return;
+      console.error(error);
     }
-
-    navigate(HOME_ROUTE.path);
   };
 
   return (

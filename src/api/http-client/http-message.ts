@@ -47,7 +47,7 @@ export class HttpMessage<
   }
 
   public send<T extends Method>(
-    body?: Method extends "get" | "delete" ? never : RequestBody,
+    body?: T extends "get" | "delete" ? never : RequestBody,
   ): Promise<ResponseBody> {
     return new Promise((resolve, reject) => {
       this._request.open(this._method, this._url);
@@ -61,7 +61,12 @@ export class HttpMessage<
         if (this._request.status >= 200 && this._request.status < 300) {
           resolve(JSON.parse(this._request.responseText));
         } else {
-          reject(JSON.parse(this._request.responseText));
+          try {
+            const result = JSON.parse(this._request.responseText);
+            reject(result);
+          } catch (e) {
+            reject(this._request);
+          }
         }
       };
 
@@ -70,7 +75,7 @@ export class HttpMessage<
           const result = JSON.parse(this._request.responseText);
           reject(result);
         } catch (e) {
-          reject("");
+          reject(this._request);
         }
       };
 

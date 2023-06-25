@@ -1,8 +1,11 @@
 import React from "react";
+import { rest } from "msw";
 import { within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 
+import { server } from "tests/msw-server";
 import { appTestRender } from "src/shared/tests";
+
 import { LoginViaPhoneForm } from "./login-via-phone-form";
 
 describe("LoginViaPhoneForm", () => {
@@ -61,6 +64,66 @@ describe("LoginViaPhoneForm", () => {
     expect(within(passwordField).queryByText("Password is required")).not.toBeInTheDocument();
   });
 
-  // TODO: implement this test
-  it("button state changes correctly on form submit", async () => {});
+  it("button state changes correctly on form submit", async () => {
+    const { getByTestId } = appTestRender(<LoginViaPhoneForm />);
+
+    const phoneField = getByTestId("phone");
+    const phoneInput = phoneField.querySelector("input");
+    if (!phoneInput) throw new Error("Phone input not found");
+
+    const passwordField = getByTestId("password");
+    const passwordInput = passwordField.querySelector("input");
+    if (!passwordInput) throw new Error("Password input not found");
+
+    const submitButton = getByTestId("submit");
+
+    // Fill in email field with valid email
+    await userEvent.type(phoneInput, "111111");
+    expect(submitButton).not.toBeDisabled();
+
+    // Fill in password
+    await userEvent.type(passwordInput, "123456");
+    expect(submitButton).not.toBeDisabled();
+
+    // Submit form
+    await userEvent.click(submitButton);
+    expect(submitButton).not.toBeDisabled();
+  });
+
+  it("form becomes invalid after submit with invalid credentials", async () => {
+    server.use(
+      rest.post("http://localhost:8000/users/login/phone", (req, res, ctx) => res(ctx.status(401))),
+    );
+
+    const { getByTestId } = appTestRender(<LoginViaPhoneForm />);
+
+    const phoneField = getByTestId("phone");
+    const phoneInput = phoneField.querySelector("input");
+    if (!phoneInput) throw new Error("Phone input not found");
+
+    const passwordField = getByTestId("password");
+    const passwordInput = passwordField.querySelector("input");
+    if (!passwordInput) throw new Error("Password input not found");
+
+    const submitButton = getByTestId("submit");
+
+    // Fill in email field with valid email
+    await userEvent.type(phoneInput, "111111");
+    expect(submitButton).not.toBeDisabled();
+
+    // Fill in password
+    await userEvent.type(passwordInput, "123456");
+    expect(submitButton).not.toBeDisabled();
+
+    // Submit form
+    await userEvent.click(submitButton);
+    expect(submitButton).not.toBeDisabled();
+
+    // check if form is invalid
+    expect(
+      await within(phoneField).findByText("Invalid phone number or password"),
+    ).toBeInTheDocument();
+    expect(passwordInput).toHaveAttribute("aria-invalid", "true");
+    expect(submitButton).not.toBeDisabled();
+  });
 });
