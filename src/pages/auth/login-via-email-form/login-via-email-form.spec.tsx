@@ -9,8 +9,8 @@ import { server } from "tests/msw-server";
 import { LoginViaEmailForm } from "./login-via-email-form";
 
 describe("LoginViaEmailForm", () => {
-  it("renders with correct text", () => {
-    const { getByTestId } = appTestRender(<LoginViaEmailForm />);
+  it("renders with correct text", async () => {
+    const { getByTestId } = await appTestRender(<LoginViaEmailForm />, false);
 
     const emailField = getByTestId("email");
     const emailInput = emailField.querySelector("input");
@@ -30,7 +30,7 @@ describe("LoginViaEmailForm", () => {
   });
 
   it("validation works correctly", async () => {
-    const { getByTestId } = appTestRender(<LoginViaEmailForm />);
+    const { getByTestId } = await appTestRender(<LoginViaEmailForm />, false);
 
     const emailField = getByTestId("email");
     const emailInput = emailField.querySelector("input");
@@ -69,7 +69,7 @@ describe("LoginViaEmailForm", () => {
   });
 
   it("button state changes correctly on form submit", async () => {
-    const { getByTestId } = appTestRender(<LoginViaEmailForm />);
+    const { getByTestId } = await appTestRender(<LoginViaEmailForm />, false);
 
     const emailField = getByTestId("email");
     const emailInput = emailField.querySelector("input");
@@ -99,7 +99,7 @@ describe("LoginViaEmailForm", () => {
       rest.post("http://localhost:8000/users/login/email", (req, res, ctx) => res(ctx.status(401))),
     );
 
-    const { getByTestId } = appTestRender(<LoginViaEmailForm />);
+    const { getByTestId } = await appTestRender(<LoginViaEmailForm />, false);
 
     const emailField = getByTestId("email");
     const emailInput = emailField.querySelector("input");

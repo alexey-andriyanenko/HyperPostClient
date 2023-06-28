@@ -6,7 +6,7 @@ import Auth from "./auth";
 
 describe("Auth", () => {
   it("renders correct either phone or email form", async () => {
-    const { getByTestId, queryByTestId } = appTestRender(<Auth />);
+    const { getByTestId, queryByTestId } = await appTestRender(<Auth />, false);
 
     expect(getByTestId("login-via-email-form")).toBeInTheDocument();
     expect(getByTestId("login-via-phone-button")).toBeInTheDocument();

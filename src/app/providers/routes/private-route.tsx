@@ -11,13 +11,7 @@ export interface IPrivateRouteProps {
   children: React.ReactNode;
 }
 export const PrivateRoute: React.FC<IPrivateRouteProps> = observer(({ children }) => {
-  const navigate = useNavigate();
   const userStore = useStore("user");
-
-  useEffect(() => {
-    if (!userStore.loggedIn) return;
-    if (!userStore.user) userStore.loadMe().catch(() => navigate(AUTH_ROUTE.path));
-  }, [userStore.loggedIn, userStore.user]);
 
   if (!userStore.loggedIn) return <Navigate to={AUTH_ROUTE.path} />;
   return <AppLayout>{children}</AppLayout>;

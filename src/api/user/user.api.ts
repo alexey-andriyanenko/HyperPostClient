@@ -5,6 +5,8 @@ import {
   IUserLoginViaEmailRequest,
   IUserLoginViaPhoneRequest,
   IUserLoginResponse,
+  IUserUpdateRequest,
+  IUpdateMeRequest,
 } from "./user.api.types";
 
 class UserApiService {
@@ -22,6 +24,17 @@ class UserApiService {
 
   loadUser(id: number) {
     return httpClient.get<IUser>("/users/:id").setRouteParams({ id }).send();
+  }
+
+  updateUser(data: IUserUpdateRequest, userId: number) {
+    return httpClient
+      .put<IUserUpdateRequest, IUser>("/users/:id")
+      .setRouteParams({ id: userId })
+      .send(data);
+  }
+
+  updateMe(data: IUpdateMeRequest) {
+    return httpClient.put<IUpdateMeRequest, IUser>("/users/me").send(data);
   }
 
   loadMe() {

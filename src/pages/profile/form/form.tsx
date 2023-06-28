@@ -13,7 +13,7 @@ import { IProfileForm } from "./form.types";
 export const Form: React.FC = observer(() => {
   const userStore = useStore("user");
 
-  const { handleSubmit, reset, control, setValue, formState } = useForm<IProfileForm>({
+  const { handleSubmit, reset, control, formState } = useForm<IProfileForm>({
     mode: "onChange",
     defaultValues: {
       firstName: "",
@@ -34,8 +34,20 @@ export const Form: React.FC = observer(() => {
     });
   }, [userStore.user]);
 
+  const onSubmit = handleSubmit(async ({ firstName, lastName, email }) => {
+    try {
+      await userStore.updateMe({
+        firstName,
+        lastName,
+        email,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
   return (
-    <Container component="form" data-testid="profile-form">
+    <Container component="form" data-testid="profile-form" onSubmit={onSubmit}>
       <Controller
         name="firstName"
         control={control}
@@ -95,6 +107,7 @@ export const Form: React.FC = observer(() => {
             fullWidth
             error={!!formState.errors.email}
             helperText={formState.errors.email?.message}
+            disabled={userStore.user?.email !== undefined}
           />
         )}
       />
@@ -121,6 +134,7 @@ export const Form: React.FC = observer(() => {
         variant="contained"
         data-testid="submit-button"
         fullWidth
+        type="submit"
         disabled={!formState.isDirty || !formState.isValid}
       >
         Submit

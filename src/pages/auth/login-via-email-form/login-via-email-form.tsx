@@ -35,6 +35,8 @@ export const LoginViaEmailForm = () => {
           setError("password", {
             type: "manual",
           });
+
+          return;
         }
       }
 

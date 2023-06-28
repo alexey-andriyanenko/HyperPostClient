@@ -5,7 +5,7 @@ import { AppHeader } from "./app-header";
 
 describe("PageHeader", () => {
   it("should render successfully", async () => {
-    const { container } = appTestRender(<AppHeader />);
+    const { container } = await appTestRender(<AppHeader />, false);
     expect(container).not.toBeNull();
   });
 });

@@ -1,7 +1,12 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { IStore } from "../store.interface";
 
-import { IUserLoginViaEmailRequest, IUserLoginViaPhoneRequest, userApiService } from "src/api/user";
+import {
+  IUpdateMeRequest,
+  IUserLoginViaEmailRequest,
+  IUserLoginViaPhoneRequest,
+  userApiService,
+} from "src/api/user";
 import { HttpClient } from "src/api/http-client";
 import { IUser } from "src/models";
 
@@ -24,28 +29,60 @@ export class UserStore implements IStore {
   async loginViaEmail(data: IUserLoginViaEmailRequest): Promise<number> {
     const res = await userApiService.loginViaEmail(data);
 
-    HttpClient.token = res.accessToken;
-    this._storeToken(res.accessToken);
-    this._loggedIn = true;
+    runInAction(() => {
+      HttpClient.token = res.accessToken;
+      this._storeToken(res.accessToken);
+      this._loggedIn = true;
+    });
 
     return res.id;
   }
   async loginViaPhone(data: IUserLoginViaPhoneRequest): Promise<number> {
     const res = await userApiService.loginViaPhone(data);
 
-    HttpClient.token = res.accessToken;
-    this._storeToken(res.accessToken);
-    this._loggedIn = true;
+    runInAction(() => {
+      HttpClient.token = res.accessToken;
+      this._storeToken(res.accessToken);
+      this._loggedIn = true;
+    });
 
     return res.id;
   }
 
   async loadMe() {
-    this._user = await userApiService.loadMe();
+    try {
+      const result = await userApiService.loadMe();
+
+      runInAction(() => {
+        this._user = result;
+        this._storeUser(result);
+      });
+    } catch (e) {
+      runInAction(() => {
+        this._user = null;
+        this._loggedIn = false;
+      });
+    }
   }
+
+  async updateMe(data: IUpdateMeRequest) {
+    if (!this._user) return;
+
+    const result = await userApiService.updateMe(data);
+
+    runInAction(() => {
+      this._user = result;
+      this._storeUser(result);
+    });
+  }
+
   logout() {}
 
   private _storeToken(token: string) {
     localStorage.setItem("token", token);
+  }
+
+  private _storeUser(user: IUser) {
+    localStorage.setItem("user", JSON.stringify(user));
   }
 }

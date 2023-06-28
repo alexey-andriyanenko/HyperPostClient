@@ -9,8 +9,8 @@ import { appTestRender } from "src/shared/tests";
 import { LoginViaPhoneForm } from "./login-via-phone-form";
 
 describe("LoginViaPhoneForm", () => {
-  it("renders with correct text", () => {
-    const { getByTestId } = appTestRender(<LoginViaPhoneForm />);
+  it("renders with correct text", async () => {
+    const { getByTestId } = await appTestRender(<LoginViaPhoneForm />, false);
 
     const phoneField = getByTestId("phone");
     const phoneInput = phoneField.querySelector("input");
@@ -30,7 +30,7 @@ describe("LoginViaPhoneForm", () => {
   });
 
   it("validation works correctly", async () => {
-    const { getByTestId } = appTestRender(<LoginViaPhoneForm />);
+    const { getByTestId } = await appTestRender(<LoginViaPhoneForm />, false);
 
     const phoneField = getByTestId("phone");
     const phoneInput = phoneField.querySelector("input");
@@ -65,7 +65,7 @@ describe("LoginViaPhoneForm", () => {
   });
 
   it("button state changes correctly on form submit", async () => {
-    const { getByTestId } = appTestRender(<LoginViaPhoneForm />);
+    const { getByTestId } = await appTestRender(<LoginViaPhoneForm />, false);
 
     const phoneField = getByTestId("phone");
     const phoneInput = phoneField.querySelector("input");
@@ -92,7 +92,7 @@ describe("LoginViaPhoneForm", () => {
       rest.post("http://localhost:8000/users/login/phone", (req, res, ctx) => res(ctx.status(401))),
     );
 
-    const { getByTestId } = appTestRender(<LoginViaPhoneForm />);
+    const { getByTestId } = await appTestRender(<LoginViaPhoneForm />, false);
 
     const phoneField = getByTestId("phone");
     const phoneInput = phoneField.querySelector("input");

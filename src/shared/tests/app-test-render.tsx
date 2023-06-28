@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { render } from "@testing-library/react";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { useStore } from "src/store";
 
-import { RoutesProvider } from "src/app/providers/routes";
 import { BrowserRouter } from "react-router-dom";
 
 const TestProviders: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -16,5 +16,11 @@ const TestProviders: React.FC<React.PropsWithChildren> = ({ children }) => {
   );
 };
 
-export const appTestRender = (component: React.ReactElement) =>
-  render(component, { wrapper: TestProviders });
+export const appTestRender = async (component: React.ReactElement, auth = true) => {
+  if (auth) {
+    const userStore = useStore("user");
+    await userStore.loadMe();
+  }
+
+  return render(component, { wrapper: TestProviders });
+};

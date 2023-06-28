@@ -34,6 +34,8 @@ export const LoginViaPhoneForm = () => {
           setError("password", {
             type: "manual",
           });
+
+          return;
         }
       }
 
