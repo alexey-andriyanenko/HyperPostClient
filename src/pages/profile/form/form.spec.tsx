@@ -110,7 +110,7 @@ describe("Form", () => {
     expect(button).not.toBeDisabled();
   });
 
-  it.only("data is provided to update user action", async () => {
+  it("data is provided to update user action", async () => {
     const store = useStore("user");
     const updateMeSpy = jest.spyOn(store, "updateMe");
 
