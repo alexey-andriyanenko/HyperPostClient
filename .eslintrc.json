@@ -20,6 +20,7 @@
     "prettier/prettier": "error",
     "@typescript-eslint/ban-ts-comment": 1,
     "react/display-name": 0,
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "jest/no-jasmine-globals": 0
   }
 }

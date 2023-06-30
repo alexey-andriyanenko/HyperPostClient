@@ -58,10 +58,7 @@ export class UserStore implements IStore {
         this._storeUser(result);
       });
     } catch (e) {
-      runInAction(() => {
-        this._user = null;
-        this._loggedIn = false;
-      });
+      this.logout();
     }
   }
 
@@ -76,7 +73,10 @@ export class UserStore implements IStore {
     });
   }
 
-  logout() {}
+  logout() {
+    this._user = null;
+    this._loggedIn = false;
+  }
 
   private _storeToken(token: string) {
     localStorage.setItem("token", token);
