@@ -28,8 +28,8 @@ export class HttpMessage<
     return this;
   }
 
-  public setSearchParams(qp: Record<string, string>): Omit<this, "setSearchParams"> {
-    const params = new URLSearchParams(qp);
+  public setSearchParams(qp: Record<string, string | number>): Omit<this, "setSearchParams"> {
+    const params = new URLSearchParams(this._stringifySearchParams(qp));
     this._url += `?${params.toString()}`;
 
     return this;
@@ -81,5 +81,12 @@ export class HttpMessage<
 
       this._request.send(JSON.stringify(body));
     });
+  }
+
+  private _stringifySearchParams(params: Record<string, string | number>): Record<string, string> {
+    return Object.keys(params).reduce((acc, key) => {
+      acc[key] = String(params[key]);
+      return acc;
+    }, {} as Record<string, string>);
   }
 }
