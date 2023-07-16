@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 
 import { RoutesProvider } from "./providers/routes";
+import { ModalsProvider } from "./providers/modals";
 import { useStore } from "../store";
 
 export const App = observer(() => {
@@ -18,6 +19,7 @@ export const App = observer(() => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <RoutesProvider />
+      <ModalsProvider />
     </ThemeProvider>
   );
 });

@@ -1,0 +1,18 @@
+import { styled, Box } from "@mui/material";
+
+export const Container = styled(Box)(() => ({
+  display: "flex",
+  flexFlow: "row wrap",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  rowGap: "24px",
+  padding: "8px 0 0 0",
+}));
+
+export const Actions = styled(Box)(() => ({
+  display: "flex",
+  justifyContent: "flex-end",
+  alignItems: "center",
+  columnGap: "16px",
+  width: "100%",
+}));

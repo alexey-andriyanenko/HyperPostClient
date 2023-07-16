@@ -1,7 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { IModalProps } from "src/store/modals/modals.store.types";
-import { Modal } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+
+import { CreateDepartmentForm } from "./create-department-form";
 
 export interface ICreateDepartmentModalProps extends IModalProps {
   name: string;
@@ -10,9 +12,12 @@ export interface ICreateDepartmentModalProps extends IModalProps {
 export const CreateDepartmentModal: React.FC<ICreateDepartmentModalProps> = observer(
   ({ isOpen, name, onClose }) => {
     return (
-      <Modal open={isOpen} onClose={onClose}>
-        hello
-      </Modal>
+      <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
+        <DialogTitle> Create Department </DialogTitle>
+        <DialogContent>
+          <CreateDepartmentForm />
+        </DialogContent>
+      </Dialog>
     );
   },
 );
