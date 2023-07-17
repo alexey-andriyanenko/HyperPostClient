@@ -3,6 +3,7 @@ import { IDepartment } from "src/models";
 
 import { IStore } from "../store.interface";
 import { departmentsApiService } from "src/api/departments";
+import { ICreateDepartmentRequest } from "../../api/departments/department.api.types";
 
 export class DepartmentsStore implements IStore {
   private _departments: IDepartment[] = [];
@@ -50,6 +51,11 @@ export class DepartmentsStore implements IStore {
         this._isLoading = false;
       });
     }
+  }
+
+  public async createDepartment(department: ICreateDepartmentRequest) {
+    await departmentsApiService.createDepartment(department);
+    await this.loadDepartments();
   }
 
   logout() {

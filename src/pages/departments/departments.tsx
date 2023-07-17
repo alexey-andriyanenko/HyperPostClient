@@ -15,7 +15,7 @@ const Departments = () => {
         <Button
           variant="contained"
           data-testid="create-department-button"
-          onClick={() => modals.open("CreateDepartmentModal", { name: "HELLOWORLD" })}
+          onClick={() => modals.open("CreateDepartmentModal", {})}
         >
           Create New Department
         </Button>
