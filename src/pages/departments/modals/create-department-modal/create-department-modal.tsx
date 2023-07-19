@@ -10,7 +10,13 @@ export type TCreateDepartmentModalProps = IModalProps;
 export const CreateDepartmentModal: React.FC<TCreateDepartmentModalProps> = observer(
   ({ isOpen, onClose }) => {
     return (
-      <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
+      <Dialog
+        open={isOpen}
+        onClose={onClose}
+        maxWidth="sm"
+        fullWidth
+        data-testid="create-department-modal"
+      >
         <DialogTitle> Create Department </DialogTitle>
         <DialogContent>
           <CreateDepartmentForm onClose={onClose} />

@@ -60,7 +60,7 @@ export const CreateDepartmentForm: React.FC<ICreateDepartmentFormProps> = observ
           control={control}
           rules={{
             required: { value: true, message: "This field is required" },
-            maxLength: { value: 100, message: "Max length: 100" },
+            maxLength: { value: 200, message: "Max length: 100" },
           }}
           render={({ field }) => (
             <TextField

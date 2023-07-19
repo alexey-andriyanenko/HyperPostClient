@@ -1,11 +1,12 @@
 import React from "react";
-import { PageContent } from "src/shared/components/layout/page-content";
 import { Grid, Typography, Button } from "@mui/material";
 
-import { DTable } from "./dtable";
+import { PageContent } from "src/shared/components/layout/page-content";
 import { useStore } from "src/store";
 
-const Departments = () => {
+import { DTable } from "./dtable";
+
+export default function () {
   const modals = useStore("modals");
 
   return (
@@ -23,6 +24,4 @@ const Departments = () => {
       <DTable />
     </PageContent>
   );
-};
-
-export default Departments;
+}

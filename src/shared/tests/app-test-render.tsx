@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { render } from "@testing-library/react";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { useStore } from "src/store";
+import { ModalsProvider } from "src/app/providers/modals";
 
 import { BrowserRouter } from "react-router-dom";
 
@@ -12,6 +13,7 @@ const TestProviders: React.FC<React.PropsWithChildren> = ({ children }) => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>{children}</BrowserRouter>
+      <ModalsProvider />
     </ThemeProvider>
   );
 };

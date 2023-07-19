@@ -2,14 +2,19 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { IDepartment } from "src/models";
 
 import { IStore } from "../store.interface";
-import { departmentsApiService } from "src/api/departments";
-import { ICreateDepartmentRequest } from "../../api/departments/department.api.types";
+
+import { departmentsApiService, ICreateDepartmentRequest } from "src/api/departments";
+import { IDepartmentsFilters } from "./departments.types";
 
 export class DepartmentsStore implements IStore {
   private _departments: IDepartment[] = [];
   private _totalPages = 0;
   private _totalCount = 0;
   private _isLoading = false;
+  private _filters: IDepartmentsFilters = {
+    page: 1,
+    limit: 10,
+  };
 
   constructor() {
     makeAutoObservable(this);
@@ -31,13 +36,18 @@ export class DepartmentsStore implements IStore {
     return this._isLoading;
   }
 
-  public async loadDepartments() {
+  public get filters() {
+    return this._filters;
+  }
+
+  public async loadDepartments(filters: IDepartmentsFilters) {
     runInAction(() => {
       this._isLoading = true;
+      this._filters = filters;
     });
 
     try {
-      const result = await departmentsApiService.loadDepartments({ page: 1, limit: 10 });
+      const result = await departmentsApiService.loadDepartments(filters);
 
       runInAction(() => {
         this._departments = result.list;
@@ -55,7 +65,7 @@ export class DepartmentsStore implements IStore {
 
   public async createDepartment(department: ICreateDepartmentRequest) {
     await departmentsApiService.createDepartment(department);
-    await this.loadDepartments();
+    await this.loadDepartments(this._filters);
   }
 
   logout() {
