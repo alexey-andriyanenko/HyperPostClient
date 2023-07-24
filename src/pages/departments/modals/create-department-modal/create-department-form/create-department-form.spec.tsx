@@ -5,7 +5,13 @@ import userEvent from "@testing-library/user-event";
 
 import { CreateDepartmentForm } from "./create-department-form";
 import { spyOn } from "jest-mock";
-import { departmentsApiService } from "../../../../../api/departments";
+import { departmentsApiService } from "src/api/departments";
+import { server } from "../../../../../../tests/msw-server";
+import { rest } from "msw";
+import { apiUrl } from "../../../../../constants/api";
+import { createDepartmentUniqueConstraintErrorMock } from "../../../../../api/departments/mocks/create-department-unique-constraint-error.mock";
+import { createDepartmentMaxLengthConstraintErrorMock } from "../../../../../api/departments/mocks/create-department-max-length-constraint-error.mock";
+import { createDepartmentValidationErrorMock } from "../../../../../api/departments/mocks/create-department-validation-error.mock";
 
 describe("CreateDepartmentForm", () => {
   it("renders with correct texts and default values", async () => {
@@ -128,5 +134,105 @@ describe("CreateDepartmentForm", () => {
 
     await userEvent.click(cancelBtn);
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it("unique constraint validation error is displayed", async () => {
+    server.use(
+      rest.post(apiUrl + "/departments", (req, res, ctx) => {
+        return res(ctx.status(400), ctx.json(createDepartmentUniqueConstraintErrorMock));
+      }),
+    );
+
+    const onClose = jest.fn();
+
+    const { getByTestId } = await appTestRender(<CreateDepartmentForm onClose={onClose} />);
+
+    const submitBtn = getByTestId("submit-btn");
+    expect(submitBtn).toBeDisabled();
+
+    const numberField = getByTestId("number");
+    const numberInput = numberField.querySelector("input");
+    if (!numberInput) throw new Error("Number input not found");
+
+    await userEvent.clear(numberInput);
+    await userEvent.type(numberInput, "1");
+
+    const fullAddressField = getByTestId("fullAddress");
+    const fullAddressInput = fullAddressField.querySelector("input");
+    if (!fullAddressInput) throw new Error("Full address input not found");
+
+    await userEvent.type(fullAddressInput, "address");
+    await userEvent.click(submitBtn);
+
+    expect(
+      await within(numberField).findByText("create-department-unique-constraint-error"),
+    ).toBeInTheDocument();
+    expect(submitBtn).toBeDisabled();
+  });
+
+  it("max length constraint validation error is displayed", async () => {
+    server.use(
+      rest.post(apiUrl + "/departments", (req, res, ctx) => {
+        return res(ctx.status(400), ctx.json(createDepartmentMaxLengthConstraintErrorMock));
+      }),
+    );
+
+    const onClose = jest.fn();
+
+    const { getByTestId } = await appTestRender(<CreateDepartmentForm onClose={onClose} />);
+
+    const submitBtn = getByTestId("submit-btn");
+    expect(submitBtn).toBeDisabled();
+
+    const numberField = getByTestId("number");
+    const numberInput = numberField.querySelector("input");
+    if (!numberInput) throw new Error("Number input not found");
+
+    await userEvent.clear(numberInput);
+    await userEvent.type(numberInput, "1");
+
+    const fullAddressField = getByTestId("fullAddress");
+    const fullAddressInput = fullAddressField.querySelector("input");
+    if (!fullAddressInput) throw new Error("Full address input not found");
+
+    await userEvent.type(fullAddressInput, "address");
+    await userEvent.click(submitBtn);
+
+    expect(
+      await within(fullAddressField).findByText("create-department-max-length-constraint-error"),
+    ).toBeInTheDocument();
+    expect(submitBtn).toBeDisabled();
+  });
+
+  it("full address validation api error is displayed", async () => {
+    server.use(
+      rest.post(apiUrl + "/departments", (req, res, ctx) => {
+        return res(ctx.status(400), ctx.json(createDepartmentValidationErrorMock));
+      }),
+    );
+
+    const onClose = jest.fn();
+
+    const { getByTestId } = await appTestRender(<CreateDepartmentForm onClose={onClose} />);
+
+    const submitBtn = getByTestId("submit-btn");
+    expect(submitBtn).toBeDisabled();
+
+    const numberField = getByTestId("number");
+    const numberInput = numberField.querySelector("input");
+    if (!numberInput) throw new Error("Number input not found");
+
+    await userEvent.clear(numberInput);
+    await userEvent.type(numberInput, "1");
+
+    const fullAddressField = getByTestId("fullAddress");
+    const fullAddressInput = fullAddressField.querySelector("input");
+    if (!fullAddressInput) throw new Error("Full address input not found");
+
+    await userEvent.type(fullAddressInput, "address");
+    await userEvent.click(submitBtn);
+
+    expect(await within(fullAddressField).findByText("full address error")).toBeInTheDocument();
+    expect(submitBtn).toBeDisabled();
   });
 });

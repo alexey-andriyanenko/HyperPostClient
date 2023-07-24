@@ -7,6 +7,8 @@ import { useStore } from "src/store";
 
 import { ICreateDepartmentForm } from "./create-department-form.types";
 import { Actions, Container } from "./create-department-form.styles";
+import { isApiError } from "src/shared/utils";
+import { ApiErrorTypeEnum } from "src/models";
 
 export interface ICreateDepartmentFormProps {
   onClose: () => void;
@@ -16,7 +18,7 @@ export const CreateDepartmentForm: React.FC<ICreateDepartmentFormProps> = observ
   ({ onClose }) => {
     const departments = useStore("departments");
 
-    const { control, formState, handleSubmit } = useForm<ICreateDepartmentForm>({
+    const { control, setError, formState, handleSubmit } = useForm<ICreateDepartmentForm>({
       mode: "onChange",
       defaultValues: {
         number: 0,
@@ -29,6 +31,32 @@ export const CreateDepartmentForm: React.FC<ICreateDepartmentFormProps> = observ
         await departments.createDepartment({ number, fullAddress });
         onClose();
       } catch (e) {
+        const _isApiError = isApiError(e);
+
+        if (_isApiError) {
+          const { type, message, errors } = e;
+
+          if (type === ApiErrorTypeEnum.createDepartmentUniqueConstraintError && message) {
+            setError("number", {
+              type: "manual",
+              message,
+            });
+          }
+
+          if (type === ApiErrorTypeEnum.createDepartmentMaxLengthConstraintError && message) {
+            setError("fullAddress", {
+              type: "manual",
+              message,
+            });
+          }
+
+          if (type === ApiErrorTypeEnum.createDepartmentValidationError && errors) {
+            setError("fullAddress", { message: errors.FullAddress[0] });
+          }
+
+          return;
+        }
+
         console.error(e);
       }
     });
@@ -60,7 +88,7 @@ export const CreateDepartmentForm: React.FC<ICreateDepartmentFormProps> = observ
           control={control}
           rules={{
             required: { value: true, message: "This field is required" },
-            maxLength: { value: 200, message: "Max length: 100" },
+            maxLength: { value: 100, message: "Max length: 100" },
           }}
           render={({ field }) => (
             <TextField
