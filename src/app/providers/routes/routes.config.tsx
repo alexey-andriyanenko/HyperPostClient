@@ -2,8 +2,8 @@ import React from "react";
 import { RouteProps } from "react-router";
 import { Home } from "src/pages/home";
 import Profile from "src/pages/profile";
-import departments from "src/pages/departments";
 import Departments from "src/pages/departments";
+import PackageCategories from "src/pages/package-categories";
 
 const AuthLazy = React.lazy(() => import("../../../pages/auth"));
 
@@ -37,5 +37,15 @@ export const DEPARTMENTS_ROUTE: IAppRoute = {
   element: <Departments />,
 };
 
+export const PACKAGE_CATEGORIES_ROUTE: IAppRoute = {
+  path: "/package-categories",
+  element: <PackageCategories />,
+};
+
 export const publicRoutes = [AUTH_ROUTE, FALLBACK_ROUTE];
-export const privateRoutes = [HOME_ROUTE, PROFILE_ROUTE, DEPARTMENTS_ROUTE];
+export const privateRoutes = [
+  HOME_ROUTE,
+  PROFILE_ROUTE,
+  DEPARTMENTS_ROUTE,
+  PACKAGE_CATEGORIES_ROUTE,
+];

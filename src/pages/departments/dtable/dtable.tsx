@@ -13,10 +13,10 @@ import { observer } from "mobx-react-lite";
 
 import { useStore } from "src/store";
 import { TableSkeleton } from "src/shared/components/ui";
+import { IDepartment } from "src/models";
 
 import { DTableContainer } from "./dtable.style";
 import { columns } from "./dtable.constants";
-import { IDepartment } from "../../../models";
 
 export const DTable = observer(() => {
   const departments = useStore("departments");

@@ -3,11 +3,13 @@ import { IRootStores } from "./root.store.types";
 import { UserStore } from "./user";
 import { DepartmentsStore } from "./departments";
 import { ModalsStore } from "./modals";
+import { PackageCategoriesStore } from "./package-categories";
 
 class RootStore implements IStore {
   private _stores: IRootStores = {
     user: new UserStore(),
     departments: new DepartmentsStore(),
+    packageCategories: new PackageCategoriesStore(),
     modals: new ModalsStore(),
   };
 
