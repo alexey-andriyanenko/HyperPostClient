@@ -3,7 +3,11 @@ import { IDepartment } from "src/models";
 
 import { IStore } from "../store.interface";
 
-import { departmentsApiService, ICreateDepartmentRequest } from "src/api/departments";
+import {
+  departmentsApiService,
+  ICreateDepartmentRequest,
+  IEditDepartmentRequest,
+} from "src/api/departments";
 import { IDepartmentsFilters } from "./departments.types";
 
 export class DepartmentsStore implements IStore {
@@ -66,6 +70,15 @@ export class DepartmentsStore implements IStore {
   public async createDepartment(department: ICreateDepartmentRequest) {
     await departmentsApiService.createDepartment(department);
     await this.loadDepartments(this._filters);
+  }
+
+  public async editDepartment(id: number, payload: IEditDepartmentRequest) {
+    const dep = await departmentsApiService.editDepartment(id, payload);
+
+    runInAction(() => {
+      const index = this._departments.findIndex((d) => d.id === dep.id);
+      this._departments[index] = dep;
+    });
   }
 
   logout() {

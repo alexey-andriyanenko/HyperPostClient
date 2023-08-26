@@ -9,5 +9,8 @@ export const createDepartmentsHandlers = (baseUrl: string) => {
     rest.post(baseUrl + "/departments", (req, res, ctx) =>
       res(ctx.status(201), ctx.json(departmentsMock)),
     ),
+    rest.put(baseUrl + "/departments/:id", (req, res, ctx) =>
+      res(ctx.status(200), ctx.json(departmentsMock)),
+    ),
   ];
 };

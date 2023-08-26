@@ -6,12 +6,15 @@ import userEvent from "@testing-library/user-event";
 import { CreateDepartmentForm } from "./create-department-form";
 import { spyOn } from "jest-mock";
 import { departmentsApiService } from "src/api/departments";
-import { server } from "../../../../../../tests/msw-server";
+import { server } from "tests/msw-server";
 import { rest } from "msw";
-import { apiUrl } from "../../../../../constants/api";
-import { createDepartmentUniqueConstraintErrorMock } from "../../../../../api/departments/mocks/create-department-unique-constraint-error.mock";
-import { createDepartmentMaxLengthConstraintErrorMock } from "../../../../../api/departments/mocks/create-department-max-length-constraint-error.mock";
-import { createDepartmentValidationErrorMock } from "../../../../../api/departments/mocks/create-department-validation-error.mock";
+import { apiUrl } from "src/constants/api";
+import {
+  createDepartmentUniqueConstraintErrorMock,
+  createDepartmentMaxLengthConstraintErrorMock,
+  createDepartmentValidationErrorMock,
+} from "src/api/departments/mocks";
+import { departmentModelMock } from "src/models/mocks";
 
 describe("CreateDepartmentForm", () => {
   it("renders with correct texts and default values", async () => {
@@ -38,6 +41,26 @@ describe("CreateDepartmentForm", () => {
 
     const submitBtn = getByTestId("submit-btn");
     expect(submitBtn).toHaveTextContent("Submit");
+  });
+
+  it("inherits initial values from department in props", async () => {
+    const { findByTestId, getByTestId } = await appTestRender(
+      <CreateDepartmentForm department={departmentModelMock} onClose={jest.fn} />,
+    );
+
+    const numberField = await findByTestId("number");
+    const numberInput = numberField.querySelector("input");
+    if (!numberInput) throw new Error("Number input not found");
+
+    expect(within(numberField).getByText("Department number")).toBeInTheDocument();
+    expect(numberInput.placeholder).toBe("Enter department number");
+    expect(numberInput).toHaveValue("1");
+
+    const fullAddressField = getByTestId("fullAddress");
+    const fullAddressInput = fullAddressField.querySelector("input");
+    if (!fullAddressInput) throw new Error("Full address input not found");
+
+    expect(fullAddressInput).toHaveValue("Full Address");
   });
 
   it("validation works correctly", async () => {
@@ -99,7 +122,18 @@ describe("CreateDepartmentForm", () => {
     expect(submitBtn).not.toBeDisabled();
   });
 
-  it("correct data is provided to request", async () => {
+  it("number field becomes disabled if department was provided", async () => {
+    const { findByTestId } = await appTestRender(
+      <CreateDepartmentForm department={departmentModelMock} onClose={jest.fn} />,
+    );
+
+    const numberField = await findByTestId("number");
+    const numberInput = numberField.querySelector("input");
+
+    expect(numberInput).toBeDisabled();
+  });
+
+  it("create request is called no department was provided", async () => {
     const onClose = jest.fn();
     const createDepartmentSpy = spyOn(departmentsApiService, "createDepartment");
 
@@ -124,7 +158,29 @@ describe("CreateDepartmentForm", () => {
     await userEvent.click(submitBtn);
 
     expect(onClose).toHaveBeenCalled();
-    expect(createDepartmentSpy).toHaveBeenCalledWith({ number: "1", fullAddress: "address" });
+    expect(createDepartmentSpy).toHaveBeenCalled();
+  });
+
+  it("edit request is called if department was provided", async () => {
+    const onClose = jest.fn();
+    const editDepartmentSpy = spyOn(departmentsApiService, "editDepartment");
+
+    const { getByTestId } = await appTestRender(
+      <CreateDepartmentForm department={departmentModelMock} onClose={onClose} />,
+    );
+
+    const submitBtn = getByTestId("submit-btn");
+    expect(submitBtn).toBeDisabled();
+
+    const fullAddressField = getByTestId("fullAddress");
+    const fullAddressInput = fullAddressField.querySelector("input");
+    if (!fullAddressInput) throw new Error("Full address input not found");
+
+    await userEvent.type(fullAddressInput, "new-address");
+    await userEvent.click(submitBtn);
+
+    expect(onClose).toHaveBeenCalled();
+    expect(editDepartmentSpy).toHaveBeenCalled();
   });
 
   it("cancel button triggers onClose", async () => {

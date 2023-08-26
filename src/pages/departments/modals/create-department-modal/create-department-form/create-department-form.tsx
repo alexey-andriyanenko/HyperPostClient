@@ -8,27 +8,32 @@ import { useStore } from "src/store";
 import { ICreateDepartmentForm } from "./create-department-form.types";
 import { Actions, Container } from "./create-department-form.styles";
 import { isApiError } from "src/shared/utils";
-import { ApiErrorTypeEnum } from "src/models";
+import { ApiErrorTypeEnum, IDepartment } from "src/models";
 
 export interface ICreateDepartmentFormProps {
+  department?: IDepartment;
   onClose: () => void;
 }
 
 export const CreateDepartmentForm: React.FC<ICreateDepartmentFormProps> = observer(
-  ({ onClose }) => {
+  ({ department, onClose }) => {
     const departments = useStore("departments");
-
     const { control, setError, formState, handleSubmit } = useForm<ICreateDepartmentForm>({
       mode: "onChange",
       defaultValues: {
-        number: 0,
-        fullAddress: "",
+        number: department?.number ?? 0,
+        fullAddress: department?.fullAddress ?? "",
       },
     });
 
     const onSubmit = handleSubmit(async ({ number, fullAddress }) => {
       try {
-        await departments.createDepartment({ number, fullAddress });
+        if (department) {
+          await departments.editDepartment(department.id, { fullAddress });
+        } else {
+          await departments.createDepartment({ number, fullAddress });
+        }
+
         onClose();
       } catch (e) {
         const _isApiError = isApiError(e);
@@ -78,6 +83,7 @@ export const CreateDepartmentForm: React.FC<ICreateDepartmentFormProps> = observ
               placeholder="Enter department number"
               data-testid="number"
               fullWidth
+              disabled={!!department}
               error={!!formState.errors.number}
               helperText={formState.errors.number?.message}
             />

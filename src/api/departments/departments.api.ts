@@ -1,6 +1,6 @@
 import { IDepartment, TPaginationRequest, TPaginationResponse } from "src/models";
 import { httpClient } from "../http-client";
-import { ICreateDepartmentRequest } from "./department.api.types";
+import { ICreateDepartmentRequest, IEditDepartmentRequest } from "./department.api.types";
 
 class DepartmentsApiService {
   loadDepartments(pagination: TPaginationRequest) {
@@ -12,6 +12,10 @@ class DepartmentsApiService {
 
   createDepartment(department: ICreateDepartmentRequest) {
     return httpClient.post<ICreateDepartmentRequest, IDepartment>("/departments").send(department);
+  }
+
+  editDepartment(id: number, payload: IEditDepartmentRequest) {
+    return httpClient.put<IEditDepartmentRequest, IDepartment>(`/departments/${id}`).send(payload);
   }
 }
 

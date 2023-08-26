@@ -1,5 +1,14 @@
 import React, { useEffect } from "react";
-import { Table, TableRow, TableCell, TableBody, TableHead, TablePagination } from "@mui/material";
+import {
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
+  TableHead,
+  TablePagination,
+  IconButton,
+  Icon,
+} from "@mui/material";
 import { observer } from "mobx-react-lite";
 
 import { useStore } from "src/store";
@@ -7,9 +16,11 @@ import { TableSkeleton } from "src/shared/components/ui";
 
 import { DTableContainer } from "./dtable.style";
 import { columns } from "./dtable.constants";
+import { IDepartment } from "../../../models";
 
 export const DTable = observer(() => {
   const departments = useStore("departments");
+  const modals = useStore("modals");
 
   useEffect(() => {
     departments.loadDepartments(departments.filters);
@@ -23,6 +34,10 @@ export const DTable = observer(() => {
       ...departments.filters,
       limit: +event.target.value,
     });
+
+  const handleEditDepartment = (department: IDepartment) => {
+    modals.open("CreateDepartmentModal", { department });
+  };
 
   return (
     <DTableContainer data-testid="departments-table">
@@ -43,6 +58,14 @@ export const DTable = observer(() => {
               <TableRow key={department.id}>
                 <TableCell> {department.number} </TableCell>
                 <TableCell> {department.fullAddress} </TableCell>
+                <TableCell>
+                  <IconButton
+                    data-testid="edit-button"
+                    onClick={() => handleEditDepartment(department)}
+                  >
+                    <Icon className="material-symbols-outlined">edit</Icon>
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

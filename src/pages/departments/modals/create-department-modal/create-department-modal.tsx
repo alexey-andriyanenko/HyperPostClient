@@ -1,14 +1,18 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { IModalProps } from "src/store/modals/modals.store.types";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+
+import { IModalProps } from "src/store/modals/modals.store.types";
+import { IDepartment } from "src/models";
 
 import { CreateDepartmentForm } from "./create-department-form";
 
-export type TCreateDepartmentModalProps = IModalProps;
+export interface ICreateDepartmentModalProps extends IModalProps {
+  department?: IDepartment;
+}
 
-export const CreateDepartmentModal: React.FC<TCreateDepartmentModalProps> = observer(
-  ({ isOpen, onClose }) => {
+export const CreateDepartmentModal: React.FC<ICreateDepartmentModalProps> = observer(
+  ({ isOpen, department, onClose }) => {
     return (
       <Dialog
         open={isOpen}
@@ -19,7 +23,7 @@ export const CreateDepartmentModal: React.FC<TCreateDepartmentModalProps> = obse
       >
         <DialogTitle> Create Department </DialogTitle>
         <DialogContent>
-          <CreateDepartmentForm onClose={onClose} />
+          <CreateDepartmentForm department={department} onClose={onClose} />
         </DialogContent>
       </Dialog>
     );

@@ -1,1 +1,1 @@
-export const columns = ["Number #", "Address"];
+export const columns = ["Number #", "Address", "Action"];

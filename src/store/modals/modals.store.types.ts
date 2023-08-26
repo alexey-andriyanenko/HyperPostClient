@@ -1,4 +1,4 @@
-import { TCreateDepartmentModalProps } from "src/pages/departments/modals";
+import { ICreateDepartmentModalProps } from "src/pages/departments/modals";
 
 export interface IModalProps {
   isOpen: boolean;
@@ -14,5 +14,5 @@ export type ModalRegistryGuard = {
 // if i try to create another type to automatically remove IModalProps
 // it will not work and will behave like 'any' :/
 export interface IModalRegistry extends ModalRegistryGuard {
-  CreateDepartmentModal?: Omit<TCreateDepartmentModalProps, keyof IModalProps>;
+  CreateDepartmentModal?: Omit<ICreateDepartmentModalProps, keyof IModalProps>;
 }
