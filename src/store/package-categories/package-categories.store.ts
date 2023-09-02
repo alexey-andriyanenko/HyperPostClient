@@ -1,6 +1,9 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { IPackageCategory, TPaginationRequest } from "src/models";
-import { packageCategoriesApiService } from "src/api/package-categories";
+import {
+  ICreatePackageCategoryRequest,
+  packageCategoriesApiService,
+} from "src/api/package-categories";
 import { IStore } from "../store.interface";
 
 export class PackageCategoriesStore implements IStore {
@@ -56,6 +59,11 @@ export class PackageCategoriesStore implements IStore {
         this._isLoading = false;
       });
     }
+  }
+
+  public async createPackageCategory(data: ICreatePackageCategoryRequest) {
+    await packageCategoriesApiService.createPackageCategory(data);
+    await this.loadPackageCategories(this._filters);
   }
 
   public logout() {

@@ -1,11 +1,12 @@
 import { ICreateDepartmentModalProps } from "src/pages/departments/modals";
+import { TCreatePackageCategoryModal } from "src/pages/package-categories/modals";
 
 export interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export type ModalName = "CreateDepartmentModal";
+export type ModalName = "CreateDepartmentModal" | "CreatePackageCategoryModal";
 
 export type ModalRegistryGuard = {
   [key in ModalName]?: unknown;
@@ -15,4 +16,5 @@ export type ModalRegistryGuard = {
 // it will not work and will behave like 'any' :/
 export interface IModalRegistry extends ModalRegistryGuard {
   CreateDepartmentModal?: Omit<ICreateDepartmentModalProps, keyof IModalProps>;
+  CreatePackageCategoryModal?: Omit<TCreatePackageCategoryModal, keyof IModalProps>;
 }
