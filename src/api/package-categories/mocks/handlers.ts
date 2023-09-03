@@ -11,5 +11,8 @@ export const createPackageCategoriesMock = (baseUrl: string) => {
     rest.post(baseUrl + "/package/categories", (req, res, ctx) =>
       res(ctx.status(200), ctx.json(packageCategoryMock)),
     ),
+    rest.put(baseUrl + "/package/categories/:id", (req, res, ctx) =>
+      res(ctx.status(200), ctx.json(packageCategoryMock)),
+    ),
   ];
 };

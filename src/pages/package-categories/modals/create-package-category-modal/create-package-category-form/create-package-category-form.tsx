@@ -1,29 +1,38 @@
-import React, { useState } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
-import { Container, Actions } from "./create-package-category-form.styles";
 import { Controller, useForm } from "react-hook-form";
 import { Button, CircularProgress, TextField } from "@mui/material";
-import { ICreatePackageCategoryForm } from "./create-package-category-form.types";
+
 import { useStore } from "src/store";
-import packageCategories from "../../../package-categories";
+import { IPackageCategory } from "src/models";
+
+import { Container, Actions } from "./create-package-category-form.styles";
+import { ICreatePackageCategoryForm } from "./create-package-category-form.types";
 
 export interface ICreatePackageCategoryFormProps {
-  onClose: () => void;
+  packageCategory?: IPackageCategory;
+  onClose: VoidFunction;
 }
 
 export const CreatePackageCategoryForm: React.FC<ICreatePackageCategoryFormProps> = observer(
-  ({ onClose }) => {
+  ({ onClose, packageCategory }) => {
     const store = useStore("packageCategories");
     const { control, formState, handleSubmit } = useForm<ICreatePackageCategoryForm>({
       defaultValues: {
-        name: "",
+        name: packageCategory?.name ?? "",
       },
       mode: "onChange",
     });
 
     const onSubmit = async (values: ICreatePackageCategoryForm) => {
       try {
-        await store.createPackageCategory(values);
+        if (packageCategory) {
+          await store.editPackageCategory(packageCategory.id, values);
+        } else {
+          await store.createPackageCategory(values);
+        }
+
+        onClose();
       } catch (e) {
         console.error(e);
       }

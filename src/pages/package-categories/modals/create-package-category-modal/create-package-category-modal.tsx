@@ -3,13 +3,16 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { observer } from "mobx-react-lite";
 
 import { IModalProps } from "src/store/modals";
+import { IPackageCategory } from "src/models";
 
 import { CreatePackageCategoryForm } from "./create-package-category-form";
 
-export type TCreatePackageCategoryModal = IModalProps;
+export interface ICreatePackageCategoryModal extends IModalProps {
+  packageCategory?: IPackageCategory;
+}
 
-export const CreatePackageCategoryModal: React.FC<TCreatePackageCategoryModal> = observer(
-  ({ isOpen, onClose }) => {
+export const CreatePackageCategoryModal: React.FC<ICreatePackageCategoryModal> = observer(
+  ({ isOpen, onClose, packageCategory }) => {
     return (
       <Dialog
         open={isOpen}
@@ -20,7 +23,7 @@ export const CreatePackageCategoryModal: React.FC<TCreatePackageCategoryModal> =
       >
         <DialogTitle> Create Package Category </DialogTitle>
         <DialogContent>
-          <CreatePackageCategoryForm onClose={onClose} />
+          <CreatePackageCategoryForm packageCategory={packageCategory} onClose={onClose} />
         </DialogContent>
       </Dialog>
     );

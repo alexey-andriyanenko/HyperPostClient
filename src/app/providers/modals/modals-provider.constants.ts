@@ -3,12 +3,12 @@ import { ModalRegistryGuard } from "src/store/modals";
 import { CreateDepartmentModal, ICreateDepartmentModalProps } from "src/pages/departments/modals";
 import {
   CreatePackageCategoryModal,
-  TCreatePackageCategoryModal,
+  ICreatePackageCategoryModal,
 } from "src/pages/package-categories/modals";
 
 export interface IModalsProviderRegistry extends ModalRegistryGuard {
   CreateDepartmentModal: React.FC<ICreateDepartmentModalProps>;
-  CreatePackageCategoryModal: React.FC<TCreatePackageCategoryModal>;
+  CreatePackageCategoryModal: React.FC<ICreatePackageCategoryModal>;
 }
 
 export const modalsRegistry: IModalsProviderRegistry = {

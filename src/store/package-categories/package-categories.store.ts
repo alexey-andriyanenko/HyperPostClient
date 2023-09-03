@@ -66,6 +66,15 @@ export class PackageCategoriesStore implements IStore {
     await this.loadPackageCategories(this._filters);
   }
 
+  public async editPackageCategory(id: number, data: ICreatePackageCategoryRequest) {
+    const pc = await packageCategoriesApiService.editPackageCategory(id, data);
+
+    runInAction(() => {
+      const index = this._packageCategories.findIndex((x) => x.id === pc.id);
+      this._packageCategories[index] = pc;
+    });
+  }
+
   public logout() {
     this._packageCategories = [];
     this._totalPages = 0;

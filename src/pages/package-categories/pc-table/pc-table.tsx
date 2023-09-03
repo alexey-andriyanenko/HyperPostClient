@@ -1,18 +1,33 @@
 import React, { useEffect } from "react";
+import { observer } from "mobx-react-lite";
 
 import { useStore } from "src/store";
 import { TableSkeleton } from "src/shared/components/ui";
-import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow } from "@mui/material";
+import {
+  Icon,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from "@mui/material";
 import { columns } from "./pc-table.constants";
 import { PCTableContainer } from "./pc-table.styles";
-import { observer } from "mobx-react-lite";
+import { IPackageCategory } from "src/models";
 
 export const PCTable = observer(() => {
+  const modals = useStore("modals");
   const packageCategories = useStore("packageCategories");
 
   useEffect(() => {
     packageCategories.loadPackageCategories(packageCategories.filters);
   }, []);
+
+  const handleEditPackageCategory = (packageCategory: IPackageCategory) => {
+    modals.open("CreatePackageCategoryModal", { packageCategory });
+  };
 
   const handlePageChange = (_: React.MouseEvent<HTMLButtonElement> | null, page: number) =>
     packageCategories.loadPackageCategories({ ...packageCategories.filters, page: page + 1 });
@@ -43,6 +58,9 @@ export const PCTable = observer(() => {
               <TableRow key={pc.id}>
                 <TableCell> {pc.id} </TableCell>
                 <TableCell> {pc.name} </TableCell>
+                <IconButton data-testid="edit-button" onClick={() => handleEditPackageCategory(pc)}>
+                  <Icon className="material-symbols-outlined">edit</Icon>
+                </IconButton>
               </TableRow>
             ))}
           </TableBody>

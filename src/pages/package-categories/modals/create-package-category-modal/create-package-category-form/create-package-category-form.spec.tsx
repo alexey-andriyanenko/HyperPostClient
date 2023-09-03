@@ -2,10 +2,10 @@ import React from "react";
 import userEvent from "@testing-library/user-event";
 
 import { appTestRender } from "src/shared/tests";
+import { packageCategoriesApiService } from "src/api/package-categories";
 
 import { CreatePackageCategoryForm } from "./create-package-category-form";
 import { within } from "@testing-library/dom";
-import { packageCategoriesApiService } from "../../../../../api/package-categories";
 
 describe("CreatePackageCategoryForm", () => {
   it("renders with correct text", async () => {
@@ -46,9 +46,22 @@ describe("CreatePackageCategoryForm", () => {
     expect(submitBtn).not.toBeDisabled();
   });
 
-  it("triggers creation request on submit", async () => {
+  it("inherits initial values from provided package category", async () => {
+    const { findByTestId } = await appTestRender(
+      <CreatePackageCategoryForm onClose={jest.fn} packageCategory={{ id: 1, name: "test" }} />,
+    );
+
+    const nameField = await findByTestId("name");
+    const nameInput = nameField.querySelector("input");
+    if (!nameInput) throw new Error("Name input not found");
+
+    expect(nameInput.value).toBe("test");
+  });
+
+  it("triggers creation request on submit and closes modal on success", async () => {
+    const onClose = jest.fn();
     const requestSpy = jest.spyOn(packageCategoriesApiService, "createPackageCategory");
-    const { getByTestId } = await appTestRender(<CreatePackageCategoryForm onClose={jest.fn} />);
+    const { getByTestId } = await appTestRender(<CreatePackageCategoryForm onClose={onClose} />);
 
     const submitBtn = getByTestId("submit-btn");
     const nameField = getByTestId("name");
@@ -59,6 +72,26 @@ describe("CreatePackageCategoryForm", () => {
     await userEvent.click(submitBtn);
 
     expect(requestSpy).toHaveBeenCalledTimes(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("triggers edit request if package category is provided and closes modal on success", async () => {
+    const onClose = jest.fn();
+    const requestSpy = jest.spyOn(packageCategoriesApiService, "editPackageCategory");
+    const { findByTestId, getByTestId } = await appTestRender(
+      <CreatePackageCategoryForm onClose={onClose} packageCategory={{ id: 1, name: "test" }} />,
+    );
+
+    const submitBtn = await findByTestId("submit-btn");
+    const nameField = getByTestId("name");
+    const nameInput = nameField.querySelector("input");
+    if (!nameInput) throw new Error("Name input not found");
+
+    await userEvent.type(nameInput, "test");
+    await userEvent.click(submitBtn);
+
+    expect(requestSpy).toHaveBeenCalledTimes(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   it("triggers onClose on cancel click", async () => {
