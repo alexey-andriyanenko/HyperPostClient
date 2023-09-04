@@ -5,6 +5,7 @@ import { Button, CircularProgress, TextField } from "@mui/material";
 
 import { useStore } from "src/store";
 import { IPackageCategory } from "src/models";
+import { isApiError } from "src/shared/utils";
 
 import { Container, Actions } from "./create-package-category-form.styles";
 import { ICreatePackageCategoryForm } from "./create-package-category-form.types";
@@ -17,7 +18,7 @@ export interface ICreatePackageCategoryFormProps {
 export const CreatePackageCategoryForm: React.FC<ICreatePackageCategoryFormProps> = observer(
   ({ onClose, packageCategory }) => {
     const store = useStore("packageCategories");
-    const { control, formState, handleSubmit } = useForm<ICreatePackageCategoryForm>({
+    const { control, formState, handleSubmit, setError } = useForm<ICreatePackageCategoryForm>({
       defaultValues: {
         name: packageCategory?.name ?? "",
       },
@@ -34,6 +35,28 @@ export const CreatePackageCategoryForm: React.FC<ICreatePackageCategoryFormProps
 
         onClose();
       } catch (e) {
+        const _isApiError = isApiError(e);
+
+        if (_isApiError) {
+          const { message, errors } = e;
+
+          if (message) {
+            setError("name", {
+              message,
+              type: "manual",
+            });
+          }
+
+          if (errors) {
+            setError("name", {
+              message: errors.Name[0],
+              type: "manual",
+            });
+          }
+
+          return;
+        }
+
         console.error(e);
       }
     };

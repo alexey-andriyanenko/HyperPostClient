@@ -6,6 +6,14 @@ import { packageCategoriesApiService } from "src/api/package-categories";
 
 import { CreatePackageCategoryForm } from "./create-package-category-form";
 import { within } from "@testing-library/dom";
+import { server } from "../../../../../../tests/msw-server";
+import { apiUrl } from "../../../../../constants/api";
+import { rest } from "msw";
+import {
+  createPackageCategoryMaxLengthConstraintErrorMock,
+  createPackageCategoryUniqueConstraintErrorMock,
+  createPackageCategoryValidationErrorMock,
+} from "../../../../../api/package-categories/mocks";
 
 describe("CreatePackageCategoryForm", () => {
   it("renders with correct text", async () => {
@@ -103,5 +111,49 @@ describe("CreatePackageCategoryForm", () => {
     await userEvent.click(cancelBtn);
 
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("displays api error message if it is returned on create package category", async () => {
+    server.use(
+      rest.post(apiUrl + "/package/categories", (req, res, ctx) => {
+        return res(ctx.status(400), ctx.json(createPackageCategoryMaxLengthConstraintErrorMock));
+      }),
+    );
+
+    const { findByTestId } = await appTestRender(<CreatePackageCategoryForm onClose={jest.fn} />);
+
+    const submitBtn = await findByTestId("submit-btn");
+    const name = await findByTestId("name");
+    const nameInput = name.querySelector("input");
+    if (!nameInput) throw new Error("Name input not found");
+
+    await userEvent.type(nameInput, "test");
+    await userEvent.click(submitBtn);
+
+    expect(
+      await within(name).findByText("create-package-category-max-length-constraint-error"),
+    ).toBeInTheDocument();
+    expect(submitBtn).toBeDisabled();
+  });
+
+  it("displays api validation error if it is returned on create package category", async () => {
+    server.use(
+      rest.post(apiUrl + "/package/categories", (req, res, ctx) => {
+        return res(ctx.status(400), ctx.json(createPackageCategoryValidationErrorMock));
+      }),
+    );
+
+    const { findByTestId } = await appTestRender(<CreatePackageCategoryForm onClose={jest.fn} />);
+
+    const submitBtn = await findByTestId("submit-btn");
+    const name = await findByTestId("name");
+    const nameInput = name.querySelector("input");
+    if (!nameInput) throw new Error("Name input not found");
+
+    await userEvent.type(nameInput, "test");
+    await userEvent.click(submitBtn);
+
+    expect(await within(name).findByText("name error")).toBeInTheDocument();
+    expect(submitBtn).toBeDisabled();
   });
 });
