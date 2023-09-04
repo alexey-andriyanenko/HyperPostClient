@@ -41,21 +41,21 @@ export const CreateDepartmentForm: React.FC<ICreateDepartmentFormProps> = observ
         if (_isApiError) {
           const { type, message, errors } = e;
 
-          if (type === ApiErrorTypeEnum.createDepartmentUniqueConstraintError && message) {
+          if (type === ApiErrorTypeEnum.departmentUniqueConstraintError && message) {
             setError("number", {
               type: "manual",
               message,
             });
           }
 
-          if (type === ApiErrorTypeEnum.createDepartmentMaxLengthConstraintError && message) {
+          if (type === ApiErrorTypeEnum.departmentMaxLengthConstraintError && message) {
             setError("fullAddress", {
               type: "manual",
               message,
             });
           }
 
-          if (type === ApiErrorTypeEnum.createDepartmentValidationError && errors) {
+          if (type === ApiErrorTypeEnum.departmentValidationError && errors) {
             setError("fullAddress", { message: errors.FullAddress[0] });
           }
 

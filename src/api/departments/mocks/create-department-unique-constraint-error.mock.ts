@@ -1,7 +1,7 @@
 import { ApiErrorTypeEnum, IApiError } from "src/models";
 
-export const createDepartmentUniqueConstraintErrorMock: IApiError = {
-  type: ApiErrorTypeEnum.createDepartmentUniqueConstraintError,
-  message: "create-department-unique-constraint-error",
+export const departmentUniqueConstraintErrorMock: IApiError = {
+  type: ApiErrorTypeEnum.departmentUniqueConstraintError,
+  message: "department-unique-constraint-error",
   errors: null,
 };

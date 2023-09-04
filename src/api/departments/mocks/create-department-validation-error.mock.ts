@@ -1,7 +1,7 @@
 import { IApiError, ApiErrorTypeEnum } from "src/models";
 
-export const createDepartmentValidationErrorMock: IApiError = {
-  type: ApiErrorTypeEnum.createDepartmentValidationError,
+export const departmentValidationErrorMock: IApiError = {
+  type: ApiErrorTypeEnum.departmentValidationError,
   message: null,
   errors: {
     FullAddress: ["full address error"],

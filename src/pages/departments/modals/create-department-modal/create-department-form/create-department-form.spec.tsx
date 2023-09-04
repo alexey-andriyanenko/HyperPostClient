@@ -10,9 +10,9 @@ import { server } from "tests/msw-server";
 import { rest } from "msw";
 import { apiUrl } from "src/constants/api";
 import {
-  createDepartmentUniqueConstraintErrorMock,
-  createDepartmentMaxLengthConstraintErrorMock,
-  createDepartmentValidationErrorMock,
+  departmentMaxLengthConstraintErrorMock,
+  departmentUniqueConstraintErrorMock,
+  departmentValidationErrorMock,
 } from "src/api/departments/mocks";
 import { departmentModelMock } from "src/models/mocks";
 
@@ -195,7 +195,7 @@ describe("CreateDepartmentForm", () => {
   it("unique constraint validation error is displayed", async () => {
     server.use(
       rest.post(apiUrl + "/departments", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(createDepartmentUniqueConstraintErrorMock));
+        return res(ctx.status(400), ctx.json(departmentUniqueConstraintErrorMock));
       }),
     );
 
@@ -221,7 +221,7 @@ describe("CreateDepartmentForm", () => {
     await userEvent.click(submitBtn);
 
     expect(
-      await within(numberField).findByText("create-department-unique-constraint-error"),
+      await within(numberField).findByText("department-unique-constraint-error"),
     ).toBeInTheDocument();
     expect(submitBtn).toBeDisabled();
   });
@@ -229,7 +229,7 @@ describe("CreateDepartmentForm", () => {
   it("max length constraint validation error is displayed", async () => {
     server.use(
       rest.post(apiUrl + "/departments", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(createDepartmentMaxLengthConstraintErrorMock));
+        return res(ctx.status(400), ctx.json(departmentMaxLengthConstraintErrorMock));
       }),
     );
 
@@ -255,7 +255,7 @@ describe("CreateDepartmentForm", () => {
     await userEvent.click(submitBtn);
 
     expect(
-      await within(fullAddressField).findByText("create-department-max-length-constraint-error"),
+      await within(fullAddressField).findByText("department-max-length-constraint-error"),
     ).toBeInTheDocument();
     expect(submitBtn).toBeDisabled();
   });
@@ -263,7 +263,7 @@ describe("CreateDepartmentForm", () => {
   it("full address validation api error is displayed", async () => {
     server.use(
       rest.post(apiUrl + "/departments", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(createDepartmentValidationErrorMock));
+        return res(ctx.status(400), ctx.json(departmentValidationErrorMock));
       }),
     );
 

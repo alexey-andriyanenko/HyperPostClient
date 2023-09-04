@@ -1,19 +1,17 @@
 import React from "react";
 import userEvent from "@testing-library/user-event";
+import { within } from "@testing-library/dom";
+import { rest } from "msw";
 
+import { server } from "tests/msw-server";
 import { appTestRender } from "src/shared/tests";
 import { packageCategoriesApiService } from "src/api/package-categories";
-
 import { CreatePackageCategoryForm } from "./create-package-category-form";
-import { within } from "@testing-library/dom";
-import { server } from "../../../../../../tests/msw-server";
-import { apiUrl } from "../../../../../constants/api";
-import { rest } from "msw";
+import { apiUrl } from "src/constants/api";
 import {
-  createPackageCategoryMaxLengthConstraintErrorMock,
-  createPackageCategoryUniqueConstraintErrorMock,
-  createPackageCategoryValidationErrorMock,
-} from "../../../../../api/package-categories/mocks";
+  packageCategoryValidationErrorMock,
+  packageCategoryUniqueConstraintErrorMock,
+} from "src/api/package-categories/mocks";
 
 describe("CreatePackageCategoryForm", () => {
   it("renders with correct text", async () => {
@@ -113,10 +111,10 @@ describe("CreatePackageCategoryForm", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it("displays api error message if it is returned on create package category", async () => {
+  it("displays api error message if it is returned", async () => {
     server.use(
       rest.post(apiUrl + "/package/categories", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(createPackageCategoryMaxLengthConstraintErrorMock));
+        return res(ctx.status(400), ctx.json(packageCategoryUniqueConstraintErrorMock));
       }),
     );
 
@@ -131,15 +129,15 @@ describe("CreatePackageCategoryForm", () => {
     await userEvent.click(submitBtn);
 
     expect(
-      await within(name).findByText("create-package-category-max-length-constraint-error"),
+      await within(name).findByText("package-category-unique-constraint-error"),
     ).toBeInTheDocument();
     expect(submitBtn).toBeDisabled();
   });
 
-  it("displays api validation error if it is returned on create package category", async () => {
+  it("displays api validation error if it is returned", async () => {
     server.use(
       rest.post(apiUrl + "/package/categories", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(createPackageCategoryValidationErrorMock));
+        return res(ctx.status(400), ctx.json(packageCategoryValidationErrorMock));
       }),
     );
 

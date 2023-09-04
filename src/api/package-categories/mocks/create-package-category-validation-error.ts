@@ -1,7 +1,7 @@
 import { IApiError, ApiErrorTypeEnum } from "src/models";
 
-export const createPackageCategoryValidationErrorMock: IApiError = {
-  type: ApiErrorTypeEnum.createPackageCategoryValidationError,
+export const packageCategoryValidationErrorMock: IApiError = {
+  type: ApiErrorTypeEnum.packageCategoryValidationError,
   message: null,
   errors: {
     Name: ["name error"],
