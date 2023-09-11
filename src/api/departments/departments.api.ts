@@ -15,7 +15,14 @@ class DepartmentsApiService {
   }
 
   editDepartment(id: number, payload: IEditDepartmentRequest) {
-    return httpClient.put<IEditDepartmentRequest, IDepartment>(`/departments/${id}`).send(payload);
+    return httpClient
+      .put<IEditDepartmentRequest, IDepartment>("/departments/:id")
+      .setRouteParams({ id })
+      .send(payload);
+  }
+
+  deleteDepartment(id: number) {
+    return httpClient.delete<void>("/departments/:id").setRouteParams({ id }).send();
   }
 }
 

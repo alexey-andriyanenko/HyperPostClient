@@ -5,13 +5,16 @@ import {
   CreatePackageCategoryModal,
   ICreatePackageCategoryModal,
 } from "src/pages/package-categories/modals";
+import { ConfirmModal, IConfirmModalProps } from "src/shared/modals";
 
 export interface IModalsProviderRegistry extends ModalRegistryGuard {
   CreateDepartmentModal: React.FC<ICreateDepartmentModalProps>;
   CreatePackageCategoryModal: React.FC<ICreatePackageCategoryModal>;
+  ConfirmModal: React.FC<IConfirmModalProps>;
 }
 
 export const modalsRegistry: IModalsProviderRegistry = {
   CreateDepartmentModal,
   CreatePackageCategoryModal,
+  ConfirmModal,
 };

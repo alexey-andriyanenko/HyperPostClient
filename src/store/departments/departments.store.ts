@@ -80,6 +80,11 @@ export class DepartmentsStore implements IStore {
     });
   }
 
+  public async deleteDepartment(id: number) {
+    await departmentsApiService.deleteDepartment(id);
+    await this.loadDepartments(this._filters);
+  }
+
   public logout() {
     this._departments = [];
     this._totalPages = 0;

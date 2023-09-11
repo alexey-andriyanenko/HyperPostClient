@@ -12,5 +12,8 @@ export const createDepartmentsHandlers = (baseUrl: string) => {
     rest.put(baseUrl + "/departments/:id", (req, res, ctx) =>
       res(ctx.status(200), ctx.json(departmentsMock)),
     ),
+    rest.delete(baseUrl + "/departments/:id", (req, res, ctx) =>
+      res(ctx.status(204), ctx.text("")),
+    ),
   ];
 };

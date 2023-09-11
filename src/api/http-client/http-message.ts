@@ -59,7 +59,8 @@ export class HttpMessage<
 
       this._request.onload = () => {
         if (this._request.status >= 200 && this._request.status < 300) {
-          resolve(JSON.parse(this._request.responseText));
+          const responseText = this._request.responseText ? this._request.responseText : "{}";
+          resolve(JSON.parse(responseText));
         } else {
           try {
             const result = JSON.parse(this._request.responseText);

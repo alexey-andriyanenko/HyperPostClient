@@ -39,6 +39,13 @@ export const DTable = observer(() => {
     modals.open("CreateDepartmentModal", { department });
   };
 
+  const handleDeleteDepartment = (department: IDepartment) => {
+    modals.open("ConfirmModal", {
+      title: "Delete Department",
+      onConfirm: () => departments.deleteDepartment(department.id),
+    });
+  };
+
   return (
     <DTableContainer data-testid="departments-table">
       {departments.isLoading ? (
@@ -60,10 +67,16 @@ export const DTable = observer(() => {
                 <TableCell> {department.fullAddress} </TableCell>
                 <TableCell>
                   <IconButton
-                    data-testid="edit-button"
+                    data-testid="edit-btn"
                     onClick={() => handleEditDepartment(department)}
                   >
                     <Icon className="material-symbols-outlined">edit</Icon>
+                  </IconButton>
+                  <IconButton
+                    data-testid="delete-btn"
+                    onClick={() => handleDeleteDepartment(department)}
+                  >
+                    <Icon className="material-symbols-outlined">delete</Icon>
                   </IconButton>
                 </TableCell>
               </TableRow>
