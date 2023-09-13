@@ -29,6 +29,13 @@ export const PCTable = observer(() => {
     modals.open("CreatePackageCategoryModal", { packageCategory });
   };
 
+  const handleDeletePackageCategory = (packageCategory: IPackageCategory) => {
+    modals.open("ConfirmModal", {
+      title: "Delete Package Category",
+      onConfirm: () => packageCategories.deletePackageCategory(packageCategory.id),
+    });
+  };
+
   const handlePageChange = (_: React.MouseEvent<HTMLButtonElement> | null, page: number) =>
     packageCategories.loadPackageCategories({ ...packageCategories.filters, page: page + 1 });
 
@@ -58,9 +65,17 @@ export const PCTable = observer(() => {
               <TableRow key={pc.id}>
                 <TableCell> {pc.id} </TableCell>
                 <TableCell> {pc.name} </TableCell>
-                <IconButton data-testid="edit-button" onClick={() => handleEditPackageCategory(pc)}>
-                  <Icon className="material-symbols-outlined">edit</Icon>
-                </IconButton>
+                <TableCell>
+                  <IconButton data-testid="edit-btn" onClick={() => handleEditPackageCategory(pc)}>
+                    <Icon className="material-symbols-outlined">edit</Icon>
+                  </IconButton>
+                  <IconButton
+                    data-testid="delete-btn"
+                    onClick={() => handleDeletePackageCategory(pc)}
+                  >
+                    <Icon className="material-symbols-outlined">delete</Icon>
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -75,6 +75,11 @@ export class PackageCategoriesStore implements IStore {
     });
   }
 
+  public async deletePackageCategory(id: number) {
+    await packageCategoriesApiService.deletePackageCategory(id);
+    await this.loadPackageCategories(this._filters);
+  }
+
   public logout() {
     this._packageCategories = [];
     this._totalPages = 0;

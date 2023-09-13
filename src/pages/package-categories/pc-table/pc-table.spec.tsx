@@ -34,7 +34,7 @@ describe("Package Categories Table", () => {
 
     const { findByTestId, getByTestId } = await appTestRender(<PCTable />);
 
-    const edit = await findByTestId("edit-button");
+    const edit = await findByTestId("edit-btn");
 
     await userEvent.click(edit);
     expect(openSpy).toHaveBeenCalledWith("CreatePackageCategoryModal", {
@@ -44,5 +44,37 @@ describe("Package Categories Table", () => {
       },
     });
     expect(getByTestId("create-package-category-modal")).toBeInTheDocument();
+  });
+
+  it("opens delete package category modal", async () => {
+    const modals = useStore("modals");
+    const openSpy = jest.spyOn(modals, "open");
+
+    const { findByTestId } = await appTestRender(<PCTable />);
+
+    const del = await findByTestId("delete-btn");
+
+    await userEvent.click(del);
+
+    expect(openSpy).toHaveBeenCalledWith("ConfirmModal", {
+      title: "Delete Package Category",
+      onConfirm: expect.any(Function),
+    });
+  });
+
+  it("triggers delete package category", async () => {
+    const packageCategories = useStore("packageCategories");
+    const deleteSpy = jest.spyOn(packageCategories, "deletePackageCategory");
+
+    const { findByTestId, getByTestId } = await appTestRender(<PCTable />);
+    const del = await findByTestId("delete-btn");
+
+    await userEvent.click(del);
+
+    const confirm = getByTestId("confirm-btn");
+
+    await userEvent.click(confirm);
+
+    expect(deleteSpy).toHaveBeenCalledWith(1);
   });
 });

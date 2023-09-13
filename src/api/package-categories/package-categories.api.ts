@@ -25,6 +25,10 @@ export class PackageCategoriesApiService {
       .setRouteParams({ id })
       .send(data);
   }
+
+  deletePackageCategory(id: number) {
+    return httpClient.delete<void>("/package/categories/:id").setRouteParams({ id }).send();
+  }
 }
 
 export const packageCategoriesApiService = new PackageCategoriesApiService();
