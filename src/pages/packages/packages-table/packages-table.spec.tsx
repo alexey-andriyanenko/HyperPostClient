@@ -1,9 +1,11 @@
 import React from "react";
+import { waitForElementToBeRemoved } from "@testing-library/dom";
+import userEvent from "@testing-library/user-event";
 
 import { appTestRender } from "src/shared/tests";
+import { useStore } from "src/store";
 
 import { PackagesTable } from "./packages-table";
-import { waitForElementToBeRemoved } from "@testing-library/dom";
 
 describe("PackagesTable", () => {
   it("renders header", async () => {
@@ -37,5 +39,17 @@ describe("PackagesTable", () => {
     ).toBeUndefined();
 
     expect(await findByTestId("packages-table-content")).toBeInTheDocument();
+  });
+
+  it("opens view package modal on view btn click", async () => {
+    const modals = useStore("modals");
+    const openSpy = jest.spyOn(modals, "open");
+    const { findByTestId } = await appTestRender(<PackagesTable />);
+
+    await userEvent.click(await findByTestId("view-btn"));
+
+    expect(openSpy).toHaveBeenCalledWith("ViewPackageModal", {
+      data: expect.any(Object),
+    });
   });
 });
