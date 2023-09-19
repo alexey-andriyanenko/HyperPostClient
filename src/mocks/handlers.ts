@@ -1,6 +1,7 @@
 import { createUserHandlers } from "src/api/user/mocks";
 import { createDepartmentsHandlers } from "src/api/departments/mocks";
 import { createPackageCategoriesMock } from "src/api/package-categories/mocks";
+import { createPackagesHandlers } from "../api/packages/mocks";
 import { apiUrl } from "src/constants/api";
 
 export const createHandlers = () => {
@@ -9,5 +10,6 @@ export const createHandlers = () => {
     ...createUserHandlers(apiUrl),
     ...createDepartmentsHandlers(apiUrl),
     ...createPackageCategoriesMock(apiUrl),
+    ...createPackagesHandlers(apiUrl),
   ];
 };

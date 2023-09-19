@@ -4,6 +4,7 @@ import { Home } from "src/pages/home";
 import Profile from "src/pages/profile";
 import Departments from "src/pages/departments";
 import PackageCategories from "src/pages/package-categories";
+import Packages from "src/pages/packages";
 
 const AuthLazy = React.lazy(() => import("../../../pages/auth"));
 
@@ -42,10 +43,16 @@ export const PACKAGE_CATEGORIES_ROUTE: IAppRoute = {
   element: <PackageCategories />,
 };
 
+export const PACKAGES_ROUTE: IAppRoute = {
+  path: "/packages",
+  element: <Packages />,
+};
+
 export const publicRoutes = [AUTH_ROUTE, FALLBACK_ROUTE];
 export const privateRoutes = [
   HOME_ROUTE,
   PROFILE_ROUTE,
   DEPARTMENTS_ROUTE,
   PACKAGE_CATEGORIES_ROUTE,
+  PACKAGES_ROUTE,
 ];
