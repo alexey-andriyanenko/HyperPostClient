@@ -19,3 +19,27 @@ export const packageMock: IPackage = {
   weight: 5,
   description: null,
 };
+
+export const packageSentMock: IPackage = {
+  ...packageMock,
+  statusId: 2,
+  sentAt: "2020-01-02T00:00:00.000Z",
+};
+
+export const packageArrivedMock: IPackage = {
+  ...packageSentMock,
+  statusId: 3,
+  arrivedAt: "2020-01-03T00:00:00.000Z",
+};
+
+export const packageReceivedMock: IPackage = {
+  ...packageArrivedMock,
+  statusId: 4,
+  receivedAt: "2020-01-04T00:00:00.000Z",
+};
+
+export const packageArchivedMock: IPackage = {
+  ...packageReceivedMock,
+  statusId: 5,
+  archivedAt: "2020-01-05T00:00:00.000Z",
+};
