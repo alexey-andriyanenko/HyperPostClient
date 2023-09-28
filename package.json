@@ -7,7 +7,7 @@
     "build:dev": "webpack --config ./webpack.dev.config.ts",
     "lint:check": "eslint --ext .ts,.tsx src",
     "lint:fix": "eslint --fix --ext .ts,.tsx src",
-    "test": "jest --runInBand"
+    "test": "jest --maxWorkers=50%"
   },
   "repository": {
     "type": "git",
