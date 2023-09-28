@@ -14,6 +14,7 @@ import {
 import { useStore } from "src/store";
 import { IPackage } from "src/models";
 import { TableSkeleton } from "src/shared/components/ui";
+import { formatDate } from "src/shared/utils";
 
 import { columns } from "./packages-table.constants";
 import { PackageStatus } from "./package-status";
@@ -50,10 +51,10 @@ export const PackagesTable: React.FC = observer(() => {
             {packages.packages.map((p) => (
               <TableRow key={p.id}>
                 <TableCell> {p.id} </TableCell>
-                <TableCell> {p.categoryId} </TableCell>
-                <TableCell> {p.senderUserId} </TableCell>
-                <TableCell> {p.receiverUserId} </TableCell>
-                <TableCell> {p.createdAt} </TableCell>
+                <TableCell> {p.category.name} </TableCell>
+                <TableCell>{`${p.senderUser.firstName} ${p.senderUser.lastName}`}</TableCell>
+                <TableCell>{`${p.receiverUser.firstName} ${p.receiverUser.lastName}`}</TableCell>
+                <TableCell> {formatDate(new Date(p.createdAt))} </TableCell>
                 <TableCell>
                   <PackageStatus status={p.statusId} />
                 </TableCell>

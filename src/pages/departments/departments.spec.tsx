@@ -1,9 +1,10 @@
 import React from "react";
-import { appTestRender } from "src/shared/tests";
 import userEvent from "@testing-library/user-event";
 
+import { appTestRender } from "src/shared/tests";
+import { useStore } from "src/store";
+
 import Departments from "./departments";
-import { useStore } from "../../store";
 
 describe("Departments", () => {
   it("renders correctly", async () => {

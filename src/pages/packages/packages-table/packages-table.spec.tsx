@@ -21,13 +21,14 @@ describe("PackagesTable", () => {
   });
 
   it("renders body", async () => {
-    const { findByText, getByText } = await appTestRender(<PackagesTable />);
+    const { findByText, getByText, getByTestId } = await appTestRender(<PackagesTable />);
 
     expect(await findByText("uuid")).toBeInTheDocument();
-    expect(getByText("2")).toBeInTheDocument();
-    expect(getByText("3")).toBeInTheDocument();
-    expect(getByText("4")).toBeInTheDocument();
-    expect(getByText("2020-01-01T00:00:00.000Z")).toBeInTheDocument();
+    expect(getByText("category-name")).toBeInTheDocument();
+    expect(getByText("sender-first-name sender-last-name")).toBeInTheDocument();
+    expect(getByText("receiver-first-name receiver-last-name")).toBeInTheDocument();
+    expect(getByTestId("package-status")).toBeInTheDocument();
+    expect(getByText("01/01/2020")).toBeInTheDocument();
   });
 
   it("renders skeleton and then body", async () => {
