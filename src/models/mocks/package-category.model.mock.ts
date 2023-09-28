@@ -1,6 +1,6 @@
 import { IPackageCategory } from "../package-category";
 
-export const packageCategoryMock: IPackageCategory = {
+export const packageCategoryModelMock: IPackageCategory = {
   id: 1,
   name: "package-category-name",
 };

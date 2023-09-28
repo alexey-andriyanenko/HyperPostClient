@@ -1,8 +1,8 @@
 import { IPackage, TPaginationResponse } from "src/models";
-import { packageMock } from "src/models/mocks";
+import { packageModelMock } from "src/models/mocks";
 
 export const packagesMock: TPaginationResponse<IPackage> = {
-  list: [packageMock],
+  list: [packageModelMock],
   totalPages: 1,
   totalCount: 1,
 };

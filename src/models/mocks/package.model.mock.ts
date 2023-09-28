@@ -1,6 +1,6 @@
 import { IPackage } from "../package";
 
-export const packageMock: IPackage = {
+export const packageModelMock: IPackage = {
   id: "uuid",
   statusId: 1,
   category: {
@@ -46,7 +46,7 @@ export const packageMock: IPackage = {
 };
 
 export const packageSentMock: IPackage = {
-  ...packageMock,
+  ...packageModelMock,
   statusId: 2,
   sentAt: "2020-01-02T00:00:00.000Z",
 };

@@ -2,7 +2,7 @@ import React from "react";
 
 import { appTestRender } from "src/shared/tests";
 import {
-  packageMock,
+  packageModelMock,
   packageSentMock,
   packageArrivedMock,
   packageReceivedMock,
@@ -14,7 +14,9 @@ import { within } from "@testing-library/dom";
 
 describe("StatusDetails", () => {
   it("renders statuses", async () => {
-    const { findByText, getByText } = await appTestRender(<StatusDetails data={packageMock} />);
+    const { findByText, getByText } = await appTestRender(
+      <StatusDetails data={packageModelMock} />,
+    );
 
     expect(await findByText("Created")).toBeInTheDocument();
     expect(getByText("Sent")).toBeInTheDocument();
@@ -24,7 +26,9 @@ describe("StatusDetails", () => {
   });
 
   it('renders "Created" status', async () => {
-    const { findByTestId, getByTestId } = await appTestRender(<StatusDetails data={packageMock} />);
+    const { findByTestId, getByTestId } = await appTestRender(
+      <StatusDetails data={packageModelMock} />,
+    );
     const created = await findByTestId("created-complete");
 
     expect(within(created).getByText("01/01/2020")).toBeInTheDocument();
