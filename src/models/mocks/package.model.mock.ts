@@ -41,8 +41,8 @@ export const packageModelMock: IPackage = {
   archivedAt: null,
   packagePrice: 50,
   deliveryPrice: 5,
-  weight: 5,
-  description: null,
+  weight: 2,
+  description: "package-description",
 };
 
 export const packageSentMock: IPackage = {

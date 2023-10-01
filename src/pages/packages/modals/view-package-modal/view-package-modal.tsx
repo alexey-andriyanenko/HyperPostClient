@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from "@mui/material";
 
 import { IModalProps } from "src/store/modals";
 import { IPackage } from "src/models";
@@ -8,6 +8,7 @@ import { IPackage } from "src/models";
 import { StatusDetails } from "./status-details";
 import { UsersDetails } from "./users-details";
 import { DepartmentsDetails } from "./departments-details";
+import { PackageDetails } from "./package-details";
 
 export interface IViewPackageModalProps extends IModalProps {
   data: IPackage;
@@ -31,7 +32,13 @@ export const ViewPackageModal: React.FC<IViewPackageModalProps> = observer(
             senderDepartment={data.senderDepartment}
             receiverDepartment={data.receiverDepartment}
           />
+          <PackageDetails data={data} />
         </DialogContent>
+        <DialogActions>
+          <Button color="primary" variant="contained" data-testid="close-button" onClick={onClose}>
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   },
