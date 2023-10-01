@@ -1,4 +1,4 @@
-import { IUser } from "../user";
+import { IUser } from "../business/user";
 
 export const clientUserMock: IUser = {
   id: 1,

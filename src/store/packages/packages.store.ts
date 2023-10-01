@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { TPaginationRequest, IPackage } from "src/models";
-import { packagesApiService } from "src/api/packages";
+import { ICreatePackageRequest, packagesApiService } from "src/api/packages";
 import { IStore } from "../store.interface";
 
 export class PackagesStore implements IStore {
@@ -55,6 +55,11 @@ export class PackagesStore implements IStore {
         this._isLoading = false;
       });
     }
+  }
+
+  public async createPackage(request: ICreatePackageRequest) {
+    await packagesApiService.createPackage(request);
+    await this.loadPackages(this._filters);
   }
 
   logout() {

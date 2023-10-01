@@ -1,4 +1,4 @@
-import { IPackage } from "../package";
+import { IPackage } from "../business/package";
 
 export const packageModelMock: IPackage = {
   id: "uuid",

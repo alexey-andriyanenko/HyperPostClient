@@ -1,4 +1,4 @@
-import { IDepartment } from "../departments";
+import { IDepartment } from "../business/departments";
 
 export const departmentModelMock: IDepartment = {
   id: 1,
