@@ -4,9 +4,12 @@ import { Autocomplete, TextField } from "@mui/material";
 
 import { useStore } from "src/store";
 import { IOption } from "src/models/option";
+import { useDebounce } from "src/shared/hooks";
 
 export const PackageCategoryField: React.FC = observer(() => {
   const packageCategories = useStore("packageCategories");
+  const debounce = useDebounce(300);
+  const [search, setSearch] = useState("");
   const [option, setOption] = useState<IOption | null>(null);
 
   const options: IOption[] = packageCategories.packageCategories.map((category) => ({
@@ -30,14 +33,28 @@ export const PackageCategoryField: React.FC = observer(() => {
   };
 
   const handleOptionChange = (_: React.SyntheticEvent, value: IOption | null) => {
+    setSearch("");
     setOption(value);
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+
+    debounce(() => {
+      packageCategories.loadPackageCategories({
+        ...packageCategories.filters,
+        name: event.target.value,
+      });
+    });
+  };
+
   return (
-    <Autocomplete
+    <Autocomplete<IOption>
       renderInput={(params) => (
         <TextField
           {...params}
+          value={search}
+          onChange={handleSearch}
           placeholder="Select Category"
           label="Package Category"
           data-testid="package-category"
@@ -45,6 +62,7 @@ export const PackageCategoryField: React.FC = observer(() => {
         />
       )}
       options={options}
+      isOptionEqualToValue={(option, value) => option.value === value.value}
       value={option}
       onChange={handleOptionChange}
       componentsProps={{

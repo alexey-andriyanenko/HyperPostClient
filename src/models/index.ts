@@ -4,5 +4,6 @@ export * from "./business/user";
 export * from "./business/package-category";
 export * from "./business/package";
 export * from "./business/package-status";
-export * from "./pagination";
+export * from "./filters/pagination";
+export * from "./filters/package-categories-filters";
 export * from "./api-error";

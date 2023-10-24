@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { IPackageCategory, TPaginationRequest } from "src/models";
+import { IPackageCategory, TPackageCategoriesFilters } from "src/models";
 import {
   ICreatePackageCategoryRequest,
   packageCategoriesApiService,
@@ -11,7 +11,7 @@ export class PackageCategoriesStore implements IStore {
   private _totalPages = 0;
   private _totalCount = 0;
   private _isLoading = false;
-  private _filters: TPaginationRequest = {
+  private _filters: TPackageCategoriesFilters = {
     page: 1,
     limit: 10,
   };
@@ -40,7 +40,7 @@ export class PackageCategoriesStore implements IStore {
     return this._filters;
   }
 
-  public async loadPackageCategories(filters: TPaginationRequest) {
+  public async loadPackageCategories(filters: TPackageCategoriesFilters) {
     this._isLoading = true;
     this._filters = filters;
 

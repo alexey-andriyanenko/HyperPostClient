@@ -1,12 +1,13 @@
 import { httpClient } from "../http-client";
-import { TPaginationResponse, IPackageCategory, TPaginationRequest } from "src/models";
+import { TPaginationResponse, IPackageCategory } from "src/models";
 import {
   ICreatePackageCategoryRequest,
   IEditPackageCategoryRequest,
 } from "./package-categories.api.types";
+import { TPackageCategoriesFilters } from "src/models";
 
 export class PackageCategoriesApiService {
-  loadPackageCategories(filters: TPaginationRequest) {
+  loadPackageCategories(filters: TPackageCategoriesFilters) {
     return httpClient
       .get<TPaginationResponse<IPackageCategory>>("/package/categories")
       .setSearchParams(filters)
