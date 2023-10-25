@@ -7,6 +7,7 @@ import {
   IUserLoginResponse,
   IUserUpdateRequest,
   IUpdateMeRequest,
+  TCheckIfUserExistsRequest,
 } from "./user.api.types";
 
 class UserApiService {
@@ -31,6 +32,10 @@ class UserApiService {
       .put<IUserUpdateRequest, IUser>("/users/:id")
       .setRouteParams({ id: userId })
       .send(data);
+  }
+
+  checkIfUserExists(data: TCheckIfUserExistsRequest) {
+    return httpClient.get<IUser>("/users/check/exists").setSearchParams(data).send();
   }
 
   updateMe(data: IUpdateMeRequest) {

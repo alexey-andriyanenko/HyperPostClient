@@ -86,6 +86,7 @@ export class HttpMessage<
 
   private _stringifySearchParams(params: Record<string, string | number>): Record<string, string> {
     return Object.keys(params).reduce((acc, key) => {
+      if (params[key] === undefined || params[key] === null) return acc;
       acc[key] = String(params[key]);
       return acc;
     }, {} as Record<string, string>);

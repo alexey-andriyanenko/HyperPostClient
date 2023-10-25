@@ -16,5 +16,8 @@ export const createUserHandlers = (baseUrl: string) => {
     rest.put(baseUrl + "/users/me", (req, res, ctx) => {
       return res(ctx.json(adminMock));
     }),
+    rest.get(baseUrl + "/users/check/exists", (req, res, ctx) => {
+      return res(ctx.status(404));
+    }),
   ];
 };

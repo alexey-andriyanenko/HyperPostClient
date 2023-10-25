@@ -25,3 +25,8 @@ export interface IUpdateMeRequest {
   lastName: string;
   email: string;
 }
+
+export type TCheckIfUserExistsRequest = {
+  email?: string;
+  phone?: string;
+};
