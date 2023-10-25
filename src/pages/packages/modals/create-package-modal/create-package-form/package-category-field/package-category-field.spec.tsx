@@ -59,7 +59,7 @@ describe("CategoryField", () => {
     });
   });
 
-  it("selects package category and sets is value as input's value", async () => {
+  it("selects package category and displays its name as input's value", async () => {
     const { findByTestId, getByText } = await appTestRender(<PackageCategoryField />);
 
     const field = (await findByTestId("package-category")) as HTMLElement;

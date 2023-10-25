@@ -3,7 +3,8 @@ import { observer } from "mobx-react-lite";
 import { Autocomplete, TextField } from "@mui/material";
 
 import { useStore } from "src/store";
-import { IOption } from "src/models/option";
+import { IOption } from "src/models";
+import { useDebounce } from "src/shared/hooks";
 
 export interface IDepartmentFieldProps {
   label: string;
@@ -13,7 +14,9 @@ export interface IDepartmentFieldProps {
 
 export const DepartmentField = observer<IDepartmentFieldProps>(
   ({ label, placeholder, "data-testid": testId }) => {
+    const debounce = useDebounce(300);
     const departments = useStore("departments");
+    const [search, setSearch] = useState("");
     const [option, setOption] = useState<IOption | null>(null);
 
     const options: IOption[] = departments.departments.map((department) => ({
@@ -40,17 +43,32 @@ export const DepartmentField = observer<IDepartmentFieldProps>(
       setOption(value);
     };
 
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(event.target.value);
+
+      debounce(() => {
+        departments.loadDepartments({
+          ...departments.filters,
+          address: event.target.value,
+          page: 1,
+        });
+      });
+    };
+
     return (
-      <Autocomplete
+      <Autocomplete<IOption>
         renderInput={(params) => (
           <TextField
             {...params}
+            value={search}
+            onChange={handleSearch}
             label={label}
             placeholder={placeholder}
             data-testid={testId}
             required
           />
         )}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
         options={options}
         value={option}
         onChange={handleOptionChange}

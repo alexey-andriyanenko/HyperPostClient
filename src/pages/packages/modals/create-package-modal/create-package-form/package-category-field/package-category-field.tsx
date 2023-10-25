@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Autocomplete, TextField } from "@mui/material";
 
 import { useStore } from "src/store";
-import { IOption } from "src/models/option";
+import { IOption } from "src/models";
 import { useDebounce } from "src/shared/hooks";
 
 export const PackageCategoryField: React.FC = observer(() => {
@@ -44,6 +44,7 @@ export const PackageCategoryField: React.FC = observer(() => {
       packageCategories.loadPackageCategories({
         ...packageCategories.filters,
         name: event.target.value,
+        page: 1,
       });
     });
   };

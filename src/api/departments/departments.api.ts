@@ -1,12 +1,13 @@
-import { IDepartment, TPaginationRequest, TPaginationResponse } from "src/models";
-import { httpClient } from "../http-client";
+import { IDepartment, TDepartmentsFilters, TPaginationResponse } from "src/models";
+
 import { ICreateDepartmentRequest, IEditDepartmentRequest } from "./department.api.types";
+import { httpClient } from "../http-client";
 
 class DepartmentsApiService {
-  loadDepartments(pagination: TPaginationRequest) {
+  loadDepartments(filters: TDepartmentsFilters) {
     return httpClient
       .get<TPaginationResponse<IDepartment>>("/departments")
-      .setSearchParams(pagination)
+      .setSearchParams(filters)
       .send();
   }
 

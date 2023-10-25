@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { IDepartment, TPaginationRequest } from "src/models";
+import { IDepartment, TDepartmentsFilters } from "src/models";
 
 import { IStore } from "../store.interface";
 
@@ -14,7 +14,7 @@ export class DepartmentsStore implements IStore {
   private _totalPages = 0;
   private _totalCount = 0;
   private _isLoading = false;
-  private _filters: TPaginationRequest = {
+  private _filters: TDepartmentsFilters = {
     page: 1,
     limit: 10,
   };
@@ -43,7 +43,7 @@ export class DepartmentsStore implements IStore {
     return this._filters;
   }
 
-  public async loadDepartments(filters: TPaginationRequest) {
+  public async loadDepartments(filters: TDepartmentsFilters) {
     runInAction(() => {
       this._isLoading = true;
       this._filters = filters;
