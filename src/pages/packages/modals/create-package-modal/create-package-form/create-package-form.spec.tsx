@@ -6,8 +6,13 @@ import { CreatePackageForm } from "./create-package-form";
 
 describe("CreatePackageForm", () => {
   it("renders correctly", async () => {
-    const { findByTestId } = await appTestRender(<CreatePackageForm />);
+    const { getByTestId } = await appTestRender(<CreatePackageForm />);
 
-    expect(await findByTestId("create-package-form")).toBeInTheDocument();
+    expect(getByTestId("package-category")).toBeInTheDocument();
+    expect(getByTestId("sender-department")).toBeInTheDocument();
+    expect(getByTestId("receiver-department")).toBeInTheDocument();
+    expect(getByTestId("from-user")).toBeInTheDocument();
+    expect(getByTestId("to-user")).toBeInTheDocument();
+    expect(getByTestId("description")).toBeInTheDocument();
   });
 });

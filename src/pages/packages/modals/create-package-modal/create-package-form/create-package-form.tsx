@@ -5,6 +5,7 @@ import { PackageCategoryField } from "./package-category-field";
 import { DepartmentField } from "./department-field";
 import { Container } from "./create-package-form.styles";
 import { UserFields } from "./user-fields";
+import { DescriptionField } from "./description-field";
 
 export const CreatePackageForm: React.FC = observer(() => {
   return (
@@ -20,9 +21,10 @@ export const CreatePackageForm: React.FC = observer(() => {
         placeholder="Select Receiver Department"
         data-testid="receiver-department"
       />
-
       <UserFields title="From" data-testid="from-user" />
       <UserFields title="To" data-testid="to-user" />
+
+      <DescriptionField />
     </Container>
   );
 });

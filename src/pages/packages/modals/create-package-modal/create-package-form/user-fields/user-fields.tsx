@@ -6,7 +6,6 @@ import { TCheckIfUserExistsRequest, userApiService } from "src/api/user";
 import { useDebounce } from "src/shared/hooks";
 
 import { Container, NamesContainer } from "./user-fields.styles";
-import { isApiError } from "../../../../../../shared/utils";
 
 export interface IUserFieldsProps {
   title: string;

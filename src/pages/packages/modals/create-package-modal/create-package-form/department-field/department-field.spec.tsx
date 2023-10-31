@@ -1,12 +1,12 @@
 import React from "react";
 import { within } from "@testing-library/dom";
+import { act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import { appTestRender } from "src/shared/tests";
 import { useStore } from "src/store";
 
 import { DepartmentField } from "./department-field";
-import userEvent from "@testing-library/user-event";
-import { act } from "@testing-library/react";
 
 jest.useFakeTimers({
   advanceTimers: 50,
@@ -27,6 +27,7 @@ describe("DepartmentField", () => {
     if (!input) throw new Error("Input not found");
 
     expect(within(field).getByText("Sender Department")).toBeInTheDocument();
+    expect(input).toHaveAttribute("placeholder", "Select Sender Department");
   });
 
   it("triggers package categories fetch on render", async () => {
