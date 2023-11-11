@@ -5,8 +5,16 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useStore } from "src/store";
 import { IOption } from "src/models";
 import { useDebounce } from "src/shared/hooks";
+import { useFormContext, useController } from "react-hook-form";
+import { ICreatePackageForm } from "../create-package-form.types";
 
 export const PackageCategoryField: React.FC = observer(() => {
+  const { control } = useFormContext<ICreatePackageForm>();
+  const { field } = useController({
+    name: "categoryId",
+    control,
+  });
+
   const packageCategories = useStore("packageCategories");
   const debounce = useDebounce(300);
   const [search, setSearch] = useState("");
@@ -35,6 +43,7 @@ export const PackageCategoryField: React.FC = observer(() => {
   const handleOptionChange = (_: React.SyntheticEvent, value: IOption | null) => {
     setSearch("");
     setOption(value);
+    field.onChange(value?.value);
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {

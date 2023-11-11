@@ -1,20 +1,30 @@
 import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { act } from "@testing-library/react";
 import { within } from "@testing-library/dom";
+import userEvent from "@testing-library/user-event";
 
 import { appTestRender } from "src/shared/tests";
 import { useStore } from "src/store";
 
 import { PackageCategoryField } from "./package-category-field";
-import userEvent from "@testing-library/user-event";
-import { act } from "@testing-library/react";
 
 jest.useFakeTimers({
   advanceTimers: 50,
 });
 
 describe("CategoryField", () => {
+  const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
+    const form = useForm();
+    return <FormProvider {...form}>{children}</FormProvider>;
+  };
+
   it("renders correctly", async () => {
-    const { findByTestId } = await appTestRender(<PackageCategoryField />);
+    const { findByTestId } = await appTestRender(
+      <Container>
+        <PackageCategoryField />
+      </Container>,
+    );
 
     const field = (await findByTestId("package-category")) as HTMLElement;
     const input = field.querySelector("input");
@@ -27,7 +37,11 @@ describe("CategoryField", () => {
     const packageCategories = useStore("packageCategories");
     const loadPackageCategoriesSpy = jest.spyOn(packageCategories, "loadPackageCategories");
 
-    await appTestRender(<PackageCategoryField />);
+    await appTestRender(
+      <Container>
+        <PackageCategoryField />
+      </Container>,
+    );
 
     expect(loadPackageCategoriesSpy).toHaveBeenCalledWith({
       page: 1,
@@ -39,7 +53,11 @@ describe("CategoryField", () => {
     const packageCategories = useStore("packageCategories");
     const loadPackageCategoriesSpy = jest.spyOn(packageCategories, "loadPackageCategories");
 
-    const { findByTestId } = await appTestRender(<PackageCategoryField />);
+    const { findByTestId } = await appTestRender(
+      <Container>
+        <PackageCategoryField />
+      </Container>,
+    );
 
     loadPackageCategoriesSpy.mockReset();
 
@@ -60,7 +78,11 @@ describe("CategoryField", () => {
   });
 
   it("selects package category and displays its name as input's value", async () => {
-    const { findByTestId, getByText } = await appTestRender(<PackageCategoryField />);
+    const { findByTestId, getByText } = await appTestRender(
+      <Container>
+        <PackageCategoryField />
+      </Container>,
+    );
 
     const field = (await findByTestId("package-category")) as HTMLElement;
     const input = field.querySelector("input");

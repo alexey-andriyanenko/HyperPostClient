@@ -13,6 +13,10 @@ describe("CreatePackageForm", () => {
     expect(getByTestId("receiver-department")).toBeInTheDocument();
     expect(getByTestId("from-user")).toBeInTheDocument();
     expect(getByTestId("to-user")).toBeInTheDocument();
+    expect(getByTestId("package-price")).toBeInTheDocument();
+    expect(getByTestId("delivery-price")).toBeInTheDocument();
+    expect(getByTestId("package-weight")).toBeInTheDocument();
     expect(getByTestId("description")).toBeInTheDocument();
+    expect(getByTestId("submit-btn")).toBeInTheDocument();
   });
 });

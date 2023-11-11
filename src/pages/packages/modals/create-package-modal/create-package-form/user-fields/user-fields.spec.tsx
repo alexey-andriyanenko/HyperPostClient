@@ -1,5 +1,6 @@
 import React from "react";
 import { rest } from "msw";
+import { FormProvider, useForm } from "react-hook-form";
 import { act } from "@testing-library/react";
 import { within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
@@ -17,9 +18,16 @@ jest.useFakeTimers({
 });
 
 describe("UserFields", () => {
+  const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
+    const form = useForm();
+    return <FormProvider {...form}>{children}</FormProvider>;
+  };
+
   it("renders correctly", async () => {
     const { findByText, getByTestId } = await appTestRender(
-      <UserFields title="Test Title" data-testid="user-fields" />,
+      <Container>
+        <UserFields name="senderUserId" title="Test Title" data-testid="user-fields" />
+      </Container>,
     );
 
     expect(await findByText("Test Title")).toBeInTheDocument();
@@ -50,7 +58,9 @@ describe("UserFields", () => {
     const requestSpy = jest.spyOn(userApiService, "checkIfUserExists");
 
     const { getByTestId } = await appTestRender(
-      <UserFields title="Test Title" data-testid="user-fields" />,
+      <Container>
+        <UserFields name="senderUserId" title="Test Title" data-testid="user-fields" />
+      </Container>,
     );
 
     const phoneOrEmail = getByTestId("phone-or-email");
@@ -71,7 +81,9 @@ describe("UserFields", () => {
     const requestSpy = jest.spyOn(userApiService, "checkIfUserExists");
 
     const { getByTestId } = await appTestRender(
-      <UserFields title="Test Title" data-testid="user-fields" />,
+      <Container>
+        <UserFields name="senderUserId" title="Test Title" data-testid="user-fields" />
+      </Container>,
     );
 
     const phoneOrEmail = getByTestId("phone-or-email");
@@ -96,7 +108,9 @@ describe("UserFields", () => {
     );
 
     const { getByTestId } = await appTestRender(
-      <UserFields title="Test Title" data-testid="user-fields" />,
+      <Container>
+        <UserFields name="senderUserId" title="Test Title" data-testid="user-fields" />,
+      </Container>,
     );
 
     const phoneOrEmail = getByTestId("phone-or-email");

@@ -6,16 +6,26 @@ import { TCheckIfUserExistsRequest, userApiService } from "src/api/user";
 import { useDebounce } from "src/shared/hooks";
 
 import { Container, NamesContainer } from "./user-fields.styles";
+import { useController, useFormContext } from "react-hook-form";
+import { ICreatePackageForm } from "../create-package-form.types";
 
 export interface IUserFieldsProps {
+  name: "senderUserId" | "receiverUserId";
   title: string;
   "data-testid": string;
 }
 
-export const UserFields: React.FC<IUserFieldsProps> = ({ title, "data-testid": testId }) => {
+export const UserFields: React.FC<IUserFieldsProps> = ({ name, title, "data-testid": testId }) => {
   const debounce = useDebounce(300);
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
+
+  const { control } = useFormContext<ICreatePackageForm>();
+  const { field } = useController({
+    name,
+    control,
+  });
+
+  const [userName, setUserName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
   const [search, setSearch] = useState("");
 
   const handleCheckIfUserExists = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,8 +44,10 @@ export const UserFields: React.FC<IUserFieldsProps> = ({ title, "data-testid": t
     try {
       const response = await userApiService.checkIfUserExists(data);
 
-      setName(response.firstName);
-      setLastName(response.lastName);
+      setUserName(response.firstName);
+      setUserLastName(response.lastName);
+
+      field.onChange(response.id);
     } catch (e) {
       if (e instanceof XMLHttpRequest && e.status === 404) return;
       console.error(e);
@@ -56,7 +68,7 @@ export const UserFields: React.FC<IUserFieldsProps> = ({ title, "data-testid": t
       />
       <NamesContainer>
         <TextField
-          value={name}
+          value={userName}
           label="First Name"
           placeholder="Enter First Name"
           data-testid="first-name"
@@ -64,7 +76,7 @@ export const UserFields: React.FC<IUserFieldsProps> = ({ title, "data-testid": t
           fullWidth
         />
         <TextField
-          value={lastName}
+          value={userLastName}
           label="Last Name"
           placeholder="Enter Last Name"
           data-testid="last-name"

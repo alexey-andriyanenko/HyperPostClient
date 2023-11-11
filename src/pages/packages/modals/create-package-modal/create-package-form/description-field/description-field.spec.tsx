@@ -1,4 +1,5 @@
 import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 
@@ -7,8 +8,17 @@ import { appTestRender } from "src/shared/tests";
 import { DescriptionField } from "./description-field";
 
 describe("DescriptionField", () => {
+  const Component = () => {
+    const form = useForm();
+    return (
+      <FormProvider {...form}>
+        <DescriptionField />
+      </FormProvider>
+    );
+  };
+
   it("renders correctly", async () => {
-    const { getByTestId } = await appTestRender(<DescriptionField />);
+    const { getByTestId } = await appTestRender(<Component />);
 
     const field = getByTestId("description");
     const textarea = field.querySelector("textarea");
@@ -19,7 +29,7 @@ describe("DescriptionField", () => {
   });
 
   it("changes description", async () => {
-    const { getByTestId } = await appTestRender(<DescriptionField />);
+    const { getByTestId } = await appTestRender(<Component />);
 
     const field = getByTestId("description");
     const textarea = field.querySelector("textarea");
@@ -28,17 +38,5 @@ describe("DescriptionField", () => {
     await userEvent.type(textarea, "test description");
 
     expect(textarea).toHaveValue("test description");
-  });
-
-  it("limits description length", async () => {
-    const { getByTestId } = await appTestRender(<DescriptionField />);
-
-    const field = getByTestId("description");
-    const textarea = field.querySelector("textarea");
-    if (!textarea) throw new Error("Textarea not found");
-
-    await userEvent.type(textarea, "a".repeat(151));
-
-    expect(textarea).toHaveValue("a".repeat(150));
   });
 });

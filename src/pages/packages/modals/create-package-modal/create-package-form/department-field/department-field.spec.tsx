@@ -1,4 +1,5 @@
 import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { within } from "@testing-library/dom";
 import { act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -13,13 +14,21 @@ jest.useFakeTimers({
 });
 
 describe("DepartmentField", () => {
+  const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
+    const form = useForm();
+    return <FormProvider {...form}>{children}</FormProvider>;
+  };
+
   it("renders correctly", async () => {
     const { findByTestId } = await appTestRender(
-      <DepartmentField
-        label="Sender Department"
-        placeholder="Select Sender Department"
-        data-testid="sender-department"
-      />,
+      <Container>
+        <DepartmentField
+          name="senderDepartmentId"
+          label="Sender Department"
+          placeholder="Select Sender Department"
+          data-testid="sender-department"
+        />
+      </Container>,
     );
 
     const field = (await findByTestId("sender-department")) as HTMLElement;
@@ -35,7 +44,14 @@ describe("DepartmentField", () => {
     const loadDepartmentsSpy = jest.spyOn(departments, "loadDepartments");
 
     await appTestRender(
-      <DepartmentField label="Label" placeholder="Placeholder" data-testid="testid" />,
+      <Container>
+        <DepartmentField
+          name="senderDepartmentId"
+          label="Label"
+          placeholder="Placeholder"
+          data-testid="testid"
+        />
+      </Container>,
     );
 
     expect(loadDepartmentsSpy).toHaveBeenCalledWith({
@@ -49,11 +65,14 @@ describe("DepartmentField", () => {
     const loadDepartmentsSpy = jest.spyOn(departments, "loadDepartments");
 
     const { findByTestId } = await appTestRender(
-      <DepartmentField
-        label="Sender Department"
-        placeholder="Select Sender Department"
-        data-testid="sender-department"
-      />,
+      <Container>
+        <DepartmentField
+          name="senderDepartmentId"
+          label="Sender Department"
+          placeholder="Select Sender Department"
+          data-testid="sender-department"
+        />
+      </Container>,
     );
 
     loadDepartmentsSpy.mockReset();
@@ -75,11 +94,14 @@ describe("DepartmentField", () => {
 
   it("selects department and displays its label as input's value", async () => {
     const { findByTestId, getByText } = await appTestRender(
-      <DepartmentField
-        label="Sender Department"
-        placeholder="Select Sender Department"
-        data-testid="sender-department"
-      />,
+      <Container>
+        <DepartmentField
+          name="senderDepartmentId"
+          label="Sender Department"
+          placeholder="Select Sender Department"
+          data-testid="sender-department"
+        />
+      </Container>,
     );
 
     const field = (await findByTestId("sender-department")) as HTMLElement;

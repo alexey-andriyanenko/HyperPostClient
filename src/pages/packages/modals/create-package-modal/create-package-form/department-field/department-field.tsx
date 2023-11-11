@@ -5,15 +5,23 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useStore } from "src/store";
 import { IOption } from "src/models";
 import { useDebounce } from "src/shared/hooks";
+import { useController, useFormContext } from "react-hook-form";
 
 export interface IDepartmentFieldProps {
+  name: "senderDepartmentId" | "receiverDepartmentId";
   label: string;
   placeholder: string;
   "data-testid": string;
 }
 
 export const DepartmentField = observer<IDepartmentFieldProps>(
-  ({ label, placeholder, "data-testid": testId }) => {
+  ({ name, label, placeholder, "data-testid": testId }) => {
+    const { control } = useFormContext();
+    const { field } = useController({
+      name,
+      control,
+    });
+
     const debounce = useDebounce(300);
     const departments = useStore("departments");
     const [search, setSearch] = useState("");
@@ -40,7 +48,9 @@ export const DepartmentField = observer<IDepartmentFieldProps>(
     };
 
     const handleOptionChange = (_: React.SyntheticEvent, value: IOption | null) => {
+      setSearch("");
       setOption(value);
+      field.onChange(value?.value);
     };
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
