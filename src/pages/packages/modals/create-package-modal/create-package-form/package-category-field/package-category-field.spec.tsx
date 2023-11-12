@@ -1,6 +1,6 @@
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { act } from "@testing-library/react";
+import { act, getByTestId } from "@testing-library/react";
 import { within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 
@@ -15,7 +15,9 @@ jest.useFakeTimers({
 
 describe("CategoryField", () => {
   const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const form = useForm();
+    const form = useForm({
+      mode: "onChange",
+    });
     return <FormProvider {...form}>{children}</FormProvider>;
   };
 
@@ -92,5 +94,24 @@ describe("CategoryField", () => {
     await userEvent.click(getByText("package-category-name"));
 
     expect(input).toHaveValue("package-category-name");
+  });
+
+  it("clears value and displays required error", async () => {
+    const { findByTestId, getByText } = await appTestRender(
+      <Container>
+        <PackageCategoryField />
+      </Container>,
+    );
+
+    const field = await findByTestId("package-category");
+    const input = field.querySelector("input");
+    if (!input) throw new Error("Input not found");
+
+    await userEvent.click(input);
+    await userEvent.click(getByText("package-category-name"));
+    await userEvent.clear(input);
+
+    expect(input).toHaveValue("");
+    expect(getByText("This field is required")).toBeInTheDocument();
   });
 });

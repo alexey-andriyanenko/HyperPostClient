@@ -17,9 +17,15 @@ export interface IDepartmentFieldProps {
 export const DepartmentField = observer<IDepartmentFieldProps>(
   ({ name, label, placeholder, "data-testid": testId }) => {
     const { control } = useFormContext();
-    const { field } = useController({
+    const { field, fieldState } = useController({
       name,
       control,
+      rules: {
+        required: {
+          value: true,
+          message: "This field is required",
+        },
+      },
     });
 
     const debounce = useDebounce(300);
@@ -70,12 +76,15 @@ export const DepartmentField = observer<IDepartmentFieldProps>(
         renderInput={(params) => (
           <TextField
             {...params}
+            ref={field.ref}
             value={search}
             onChange={handleSearch}
             label={label}
             placeholder={placeholder}
             data-testid={testId}
             required
+            error={!!fieldState.error}
+            helperText={fieldState.error?.message}
           />
         )}
         isOptionEqualToValue={(option, value) => option.value === value.value}

@@ -16,7 +16,7 @@ import { PackageWeight } from "./package-weight";
 export const CreatePackageForm: React.FC = observer(() => {
   const form = useForm<ICreatePackageForm>({
     defaultValues: {},
-    mode: "onSubmit",
+    mode: "onChange",
   });
 
   const handleSubmit = async (values: ICreatePackageForm) => {
@@ -54,13 +54,7 @@ export const CreatePackageForm: React.FC = observer(() => {
 
         <DescriptionField />
 
-        <Button
-          variant="outlined"
-          color="primary"
-          type="submit"
-          data-testid="submit-btn"
-          disabled={!form.formState.isValid || form.formState.isSubmitting}
-        >
+        <Button variant="outlined" color="primary" type="submit" data-testid="submit-btn">
           {form.formState.isSubmitting ? (
             <CircularProgress size={24} sx={{ position: "absolute" }} data-testid="loader" />
           ) : (

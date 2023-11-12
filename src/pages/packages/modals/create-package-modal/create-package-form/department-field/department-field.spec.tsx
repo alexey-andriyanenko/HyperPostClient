@@ -15,7 +15,9 @@ jest.useFakeTimers({
 
 describe("DepartmentField", () => {
   const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const form = useForm();
+    const form = useForm({
+      mode: "onChange",
+    });
     return <FormProvider {...form}>{children}</FormProvider>;
   };
 
@@ -112,5 +114,29 @@ describe("DepartmentField", () => {
     await userEvent.click(getByText("#1 - Full Address"));
 
     expect(input).toHaveValue("#1 - Full Address");
+  });
+
+  it("clears value and displays required error", async () => {
+    const { findByTestId, getByText } = await appTestRender(
+      <Container>
+        <DepartmentField
+          name="senderDepartmentId"
+          label="Sender Department"
+          placeholder="Select Sender Department"
+          data-testid="sender-department"
+        />
+      </Container>,
+    );
+
+    const field = (await findByTestId("sender-department")) as HTMLElement;
+    const input = field.querySelector("input");
+    if (!input) throw new Error("Input not found");
+
+    await userEvent.click(input);
+    await userEvent.click(getByText("#1 - Full Address"));
+    await userEvent.clear(input);
+
+    expect(input).toHaveValue("");
+    expect(getByText("This field is required")).toBeInTheDocument();
   });
 });

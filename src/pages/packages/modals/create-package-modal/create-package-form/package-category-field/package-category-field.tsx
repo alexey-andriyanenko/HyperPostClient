@@ -10,9 +10,15 @@ import { ICreatePackageForm } from "../create-package-form.types";
 
 export const PackageCategoryField: React.FC = observer(() => {
   const { control } = useFormContext<ICreatePackageForm>();
-  const { field } = useController({
+  const { field, fieldState } = useController({
     name: "categoryId",
     control,
+    rules: {
+      required: {
+        value: true,
+        message: "This field is required",
+      },
+    },
   });
 
   const packageCategories = useStore("packageCategories");
@@ -63,12 +69,15 @@ export const PackageCategoryField: React.FC = observer(() => {
       renderInput={(params) => (
         <TextField
           {...params}
+          ref={field.ref}
           value={search}
           onChange={handleSearch}
           placeholder="Select Category"
           label="Package Category"
           data-testid="package-category"
           required
+          error={!!fieldState.error}
+          helperText={fieldState.error?.message}
         />
       )}
       options={options}

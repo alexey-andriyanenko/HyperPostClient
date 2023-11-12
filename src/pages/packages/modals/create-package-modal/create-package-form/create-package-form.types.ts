@@ -6,5 +6,6 @@ export interface ICreatePackageForm {
   receiverDepartmentId: number;
   packagePrice: number;
   deliveryPrice: number;
+  weight: number;
   description?: string;
 }

@@ -9,7 +9,12 @@ import { DescriptionField } from "./description-field";
 
 describe("DescriptionField", () => {
   const Component = () => {
-    const form = useForm();
+    const form = useForm({
+      mode: "onChange",
+      defaultValues: {
+        description: "",
+      },
+    });
     return (
       <FormProvider {...form}>
         <DescriptionField />
@@ -38,5 +43,17 @@ describe("DescriptionField", () => {
     await userEvent.type(textarea, "test description");
 
     expect(textarea).toHaveValue("test description");
+  });
+
+  it("triggers maxLength error", async () => {
+    const { getByTestId, getByText } = await appTestRender(<Component />);
+
+    const field = getByTestId("description");
+    const textarea = field.querySelector("textarea");
+    if (!textarea) throw new Error("Textarea not found");
+
+    await userEvent.type(textarea, "a".repeat(151));
+
+    expect(getByText("Maximum description length is 150 characters")).toBeInTheDocument();
   });
 });
