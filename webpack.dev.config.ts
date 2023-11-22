@@ -49,6 +49,9 @@ const config: webpack.Configuration = {
       filename: "styles/[name].[contenthash].css",
     }),
     new ForkTsCheckerWebpackPlugin(),
+    new webpack.DefinePlugin({
+      ENABLE_MOCK: JSON.stringify(process.env.ENABLE_MOCK),
+    }),
   ],
 };
 
