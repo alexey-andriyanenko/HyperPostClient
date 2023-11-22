@@ -13,7 +13,7 @@ export const CreatePackageModal = observer<TCreatePackageModalProps>(({ isOpen, 
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>Create Package</DialogTitle>
       <DialogContent>
-        <CreatePackageForm />
+        <CreatePackageForm onClose={onClose} />
       </DialogContent>
     </Dialog>
   );

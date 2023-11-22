@@ -12,7 +12,7 @@ describe("PackageWeight", () => {
   const Component = () => {
     const form = useForm({
       defaultValues: {
-        weight: 0,
+        weight: undefined,
       },
       resolver: createPackageFormResolver,
       mode: "onChange",

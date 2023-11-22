@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Navigate, useNavigate } from "react-router";
+import React from "react";
+import { Navigate } from "react-router";
 import { observer } from "mobx-react-lite";
 
 import { useStore } from "src/store";

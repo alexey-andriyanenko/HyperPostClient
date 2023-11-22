@@ -113,9 +113,9 @@ describe("DepartmentField", () => {
     if (!input) throw new Error("Input not found");
 
     await userEvent.click(input);
-    await userEvent.click(getByText("#1 - Full Address"));
+    await userEvent.click(getByText("#1 - department-1-address"));
 
-    expect(input).toHaveValue("#1 - Full Address");
+    expect(input).toHaveValue("#1 - department-1-address");
   });
 
   it("clears value and displays required error", async () => {
@@ -135,7 +135,7 @@ describe("DepartmentField", () => {
     if (!input) throw new Error("Input not found");
 
     await userEvent.click(input);
-    await userEvent.click(getByText("#1 - Full Address"));
+    await userEvent.click(getByText("#1 - department-1-address"));
     await userEvent.clear(input);
 
     expect(input).toHaveValue("");
@@ -169,10 +169,10 @@ describe("DepartmentField", () => {
     if (!receiverDepartmentInput) throw new Error("Input not found");
 
     await userEvent.click(senderDepartmentInput);
-    await userEvent.click(getByText("#1 - Full Address"));
+    await userEvent.click(getByText("#1 - department-1-address"));
 
     await userEvent.click(receiverDepartmentInput);
-    await userEvent.click(getByText("#1 - Full Address"));
+    await userEvent.click(getByText("#1 - department-1-address"));
 
     expect(
       getByText("Receiver Department cannot be equal to Sender Department"),
@@ -206,10 +206,10 @@ describe("DepartmentField", () => {
     if (!receiverDepartmentInput) throw new Error("Input not found");
 
     await userEvent.click(receiverDepartmentInput);
-    await userEvent.click(getByText("#1 - Full Address"));
+    await userEvent.click(getByText("#1 - department-1-address"));
 
     await userEvent.click(senderDepartmentInput);
-    await userEvent.click(getByText("#1 - Full Address"));
+    await userEvent.click(getByText("#1 - department-1-address"));
 
     expect(
       getByText("Sender Department cannot be equal to Receiver Department"),

@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 
 import { useStore } from "src/store";
 import { DTable } from "./dtable";
+import { within } from "@testing-library/dom";
 
 describe("Departments Table", () => {
   it("renders header", async () => {
@@ -15,12 +16,16 @@ describe("Departments Table", () => {
   });
 
   it("renders body", async () => {
-    const { findByText, getByText, getByTestId } = await appTestRender(<DTable />);
+    const { findByText, getByText, getAllByTestId } = await appTestRender(<DTable />);
 
     expect(await findByText("1")).toBeInTheDocument();
-    expect(getByText("Full Address")).toBeInTheDocument();
-    expect(getByTestId("edit-btn")).toBeInTheDocument();
-    expect(getByTestId("delete-btn")).toBeInTheDocument();
+    expect(getByText("department-1-address")).toBeInTheDocument();
+
+    expect(getByText("2")).toBeInTheDocument();
+    expect(getByText("department-2-address")).toBeInTheDocument();
+
+    expect(getAllByTestId("edit-btn")).toHaveLength(2);
+    expect(getAllByTestId("delete-btn")).toHaveLength(2);
   });
 
   it("renders skeleton and then content", async () => {
@@ -35,7 +40,8 @@ describe("Departments Table", () => {
     const openSpy = jest.spyOn(modals, "open");
 
     const { findByTestId, getByTestId } = await appTestRender(<DTable />);
-    const edit = await findByTestId("edit-btn");
+    const row = await findByTestId("department-1");
+    const edit = within(row).getByTestId("edit-btn");
 
     await userEvent.click(edit);
 
@@ -43,7 +49,7 @@ describe("Departments Table", () => {
       department: {
         id: 1,
         number: 1,
-        fullAddress: "Full Address",
+        fullAddress: "department-1-address",
       },
     });
     expect(getByTestId("create-department-modal")).toBeInTheDocument();
@@ -54,7 +60,8 @@ describe("Departments Table", () => {
     const openSpy = jest.spyOn(modals, "open");
 
     const { findByTestId } = await appTestRender(<DTable />);
-    const del = await findByTestId("delete-btn");
+    const row = await findByTestId("department-1");
+    const del = within(row).getByTestId("delete-btn");
 
     await userEvent.click(del);
 
@@ -69,7 +76,8 @@ describe("Departments Table", () => {
     const deleteSpy = jest.spyOn(departments, "deleteDepartment");
 
     const { findByTestId } = await appTestRender(<DTable />);
-    const del = await findByTestId("delete-btn");
+    const row = await findByTestId("department-1");
+    const del = within(row).getByTestId("delete-btn");
 
     await userEvent.click(del);
 

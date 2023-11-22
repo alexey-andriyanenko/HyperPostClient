@@ -30,7 +30,9 @@ class UserApiService {
   updateUser(data: IUserUpdateRequest, userId: number) {
     return httpClient
       .put<IUserUpdateRequest, IUser>("/users/:id")
-      .setRouteParams({ id: userId })
+      .setRouteParams({
+        id: userId,
+      })
       .send(data);
   }
 

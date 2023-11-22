@@ -54,7 +54,6 @@ export class CreatePackageFormValidator extends Validator<ICreatePackageForm> {
       .lessThanOrEqualTo(1000)
       .withMessage("Weight must be less than or equal to 1000kg");
 
-    this.ruleFor("description").notNull().withMessage("This field is required");
     this.ruleFor("description")
       .maxLength(50)
       .withMessage("Description must be less than or equal to 50 characters");

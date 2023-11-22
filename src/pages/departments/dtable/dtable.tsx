@@ -62,7 +62,10 @@ export const DTable = observer(() => {
 
           <TableBody>
             {departments.departments.map((department) => (
-              <TableRow key={department.id}>
+              <TableRow
+                key={`department-${department.id}`}
+                data-testid={`department-${department.id}`}
+              >
                 <TableCell> {department.number} </TableCell>
                 <TableCell> {department.fullAddress} </TableCell>
                 <TableCell>

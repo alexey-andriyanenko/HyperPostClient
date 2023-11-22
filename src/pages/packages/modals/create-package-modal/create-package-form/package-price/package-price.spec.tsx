@@ -13,7 +13,7 @@ describe("PackagePrice", () => {
     const form = useForm({
       mode: "onChange",
       defaultValues: {
-        packagePrice: 0,
+        packagePrice: undefined,
       },
       resolver: createPackageFormResolver,
     });

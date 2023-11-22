@@ -16,7 +16,7 @@ export const LoginViaEmailForm = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting },
   } = useForm<ILoginViaEmailForm>({
     mode: "onSubmit",
   });

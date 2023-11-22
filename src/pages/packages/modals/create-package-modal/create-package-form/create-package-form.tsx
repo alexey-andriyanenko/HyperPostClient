@@ -15,7 +15,11 @@ import { PackageWeight } from "./package-weight";
 import { ICreatePackageForm } from "./create-package-form.types";
 import { createPackageFormResolver } from "./create-package-form.validator";
 
-export const CreatePackageForm: React.FC = observer(() => {
+export interface ICreatePackageFormProps {
+  onClose: VoidFunction;
+}
+
+export const CreatePackageForm: React.FC<ICreatePackageFormProps> = observer(({ onClose }) => {
   const packagesStore = useStore("packages");
   const form = useForm<ICreatePackageForm>({
     defaultValues: {},
@@ -25,7 +29,19 @@ export const CreatePackageForm: React.FC = observer(() => {
 
   const handleSubmit = async (values: ICreatePackageForm) => {
     try {
-      await packagesStore.createPackage(values);
+      await packagesStore.createPackage({
+        categoryId: values.categoryId,
+        senderDepartmentId: values.senderDepartmentId,
+        receiverDepartmentId: values.receiverDepartmentId,
+        senderUserId: values.senderUserId,
+        receiverUserId: values.receiverUserId,
+        packagePrice: Number(values.packagePrice),
+        deliveryPrice: Number(values.deliveryPrice),
+        weight: Number(values.weight),
+        description: values.description,
+      });
+
+      onClose();
     } catch (e) {
       console.error(e);
     }

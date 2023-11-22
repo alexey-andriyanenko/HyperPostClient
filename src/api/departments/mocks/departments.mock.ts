@@ -5,7 +5,12 @@ export const departmentsMock: TPaginationResponse<IDepartment> = {
     {
       id: 1,
       number: 1,
-      fullAddress: "Full Address",
+      fullAddress: "department-1-address",
+    },
+    {
+      id: 2,
+      number: 2,
+      fullAddress: "department-2-address",
     },
   ],
   totalPages: 1,

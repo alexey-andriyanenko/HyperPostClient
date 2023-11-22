@@ -4,8 +4,8 @@ export interface ICreatePackageForm {
   receiverUserId: number;
   senderDepartmentId: number;
   receiverDepartmentId: number;
-  packagePrice: number;
-  deliveryPrice: number;
-  weight: number;
+  packagePrice: string;
+  deliveryPrice: string;
+  weight: string;
   description?: string;
 }
