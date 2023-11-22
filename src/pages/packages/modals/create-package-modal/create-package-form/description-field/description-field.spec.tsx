@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 import { appTestRender } from "src/shared/tests";
 
 import { DescriptionField } from "./description-field";
+import { createPackageFormResolver } from "../create-package-form.validator";
 
 describe("DescriptionField", () => {
   const Component = () => {
@@ -14,6 +15,7 @@ describe("DescriptionField", () => {
       defaultValues: {
         description: "",
       },
+      resolver: createPackageFormResolver,
     });
     return (
       <FormProvider {...form}>
@@ -52,8 +54,10 @@ describe("DescriptionField", () => {
     const textarea = field.querySelector("textarea");
     if (!textarea) throw new Error("Textarea not found");
 
-    await userEvent.type(textarea, "a".repeat(151));
+    await userEvent.type(textarea, "a".repeat(51));
 
-    expect(getByText("Maximum description length is 150 characters")).toBeInTheDocument();
+    expect(
+      getByText("Description must be less than or equal to 50 characters"),
+    ).toBeInTheDocument();
   });
 });

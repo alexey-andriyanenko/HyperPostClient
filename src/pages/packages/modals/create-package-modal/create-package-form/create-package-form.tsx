@@ -1,26 +1,34 @@
 import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { Button, CircularProgress } from "@mui/material";
 import { observer } from "mobx-react-lite";
 
+import { useStore } from "src/store";
 import { PackageCategoryField } from "./package-category-field";
 import { DepartmentField } from "./department-field";
 import { Container } from "./create-package-form.styles";
 import { UserFields } from "./user-fields";
 import { DescriptionField } from "./description-field";
-import { FormProvider, useForm } from "react-hook-form";
-import { ICreatePackageForm } from "./create-package-form.types";
-import { Button, CircularProgress } from "@mui/material";
 import { PackagePrice } from "./package-price";
 import { DeliveryPrice } from "./delivery-price";
 import { PackageWeight } from "./package-weight";
+import { ICreatePackageForm } from "./create-package-form.types";
+import { createPackageFormResolver } from "./create-package-form.validator";
 
 export const CreatePackageForm: React.FC = observer(() => {
+  const packagesStore = useStore("packages");
   const form = useForm<ICreatePackageForm>({
     defaultValues: {},
     mode: "onChange",
+    resolver: createPackageFormResolver,
   });
 
   const handleSubmit = async (values: ICreatePackageForm) => {
-    console.log(values);
+    try {
+      await packagesStore.createPackage(values);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

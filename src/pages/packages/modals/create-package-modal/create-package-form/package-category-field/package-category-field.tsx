@@ -13,12 +13,6 @@ export const PackageCategoryField: React.FC = observer(() => {
   const { field, fieldState } = useController({
     name: "categoryId",
     control,
-    rules: {
-      required: {
-        value: true,
-        message: "This field is required",
-      },
-    },
   });
 
   const packageCategories = useStore("packageCategories");

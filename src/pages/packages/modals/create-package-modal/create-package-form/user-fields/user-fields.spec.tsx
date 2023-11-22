@@ -12,6 +12,7 @@ import { apiUrl } from "src/constants/api";
 import { clientUserMock } from "src/models/mocks";
 
 import { UserFields } from "./user-fields";
+import { createPackageFormResolver } from "../create-package-form.validator";
 
 jest.useFakeTimers({
   advanceTimers: 50,
@@ -19,7 +20,14 @@ jest.useFakeTimers({
 
 describe("UserFields", () => {
   const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const form = useForm();
+    const form = useForm({
+      mode: "onChange",
+      defaultValues: {
+        senderUserId: undefined,
+        receiverUserId: undefined,
+      },
+      resolver: createPackageFormResolver,
+    });
     return <FormProvider {...form}>{children}</FormProvider>;
   };
 
@@ -130,5 +138,36 @@ describe("UserFields", () => {
 
     expect(firstNameInput).toHaveValue(clientUserMock.firstName);
     expect(lastNameInput).toHaveValue(clientUserMock.lastName);
+  });
+
+  it("displays an error if receiver user equals sender user", async () => {
+    server.use(
+      rest.get(apiUrl + "/users/check/exists", (req, res, ctx) => {
+        return res(ctx.json(clientUserMock));
+      }),
+    );
+
+    const { findByTestId, getByText } = await appTestRender(
+      <Container>
+        <UserFields name="senderUserId" title="Sender" data-testid="sender-user" />,
+        <UserFields name="receiverUserId" title="Receiver" data-testid="receiver-user" />
+      </Container>,
+    );
+
+    const senderUser = (await findByTestId("sender-user")) as HTMLElement;
+    const senderUserField = within(senderUser).getByTestId("phone-or-email");
+    const senderUserInput = senderUserField.querySelector("input");
+    if (!senderUserInput) throw new Error("senderUserInput is null");
+
+    const receiverUser = (await findByTestId("receiver-user")) as HTMLElement;
+    const receiverUserField = within(receiverUser).getByTestId("phone-or-email");
+    const receiverUserInput = receiverUserField.querySelector("input");
+    if (!receiverUserInput) throw new Error("receiverUserInput is null");
+
+    await userEvent.type(senderUserInput, "test@mail.com");
+    await userEvent.type(receiverUserInput, "test@mail.com");
+    await act(jest.runOnlyPendingTimersAsync);
+
+    expect(getByText("Receiver cannot be equal to Sender")).toBeInTheDocument();
   });
 });

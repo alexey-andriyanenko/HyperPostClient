@@ -11,20 +11,6 @@ export const DeliveryPrice: React.FC = () => {
     <Controller
       name="deliveryPrice"
       control={control}
-      rules={{
-        required: {
-          value: true,
-          message: "This field is required",
-        },
-        min: {
-          value: 5,
-          message: "Minimum delivery price is 5$",
-        },
-        max: {
-          value: 99999999,
-          message: "Maximum delivery price is 99999999$",
-        },
-      }}
       render={({ field, fieldState }) => (
         <TextField
           {...field}

@@ -1,6 +1,7 @@
 import { rest } from "msw";
 import { loginMock } from "./login.mock";
 import { adminMock } from "./admin.mock";
+import { clientMock } from "./client.mock";
 
 export const createUserHandlers = (baseUrl: string) => {
   return [
@@ -17,7 +18,7 @@ export const createUserHandlers = (baseUrl: string) => {
       return res(ctx.json(adminMock));
     }),
     rest.get(baseUrl + "/users/check/exists", (req, res, ctx) => {
-      return res(ctx.status(404));
+      return res(ctx.json(clientMock));
     }),
   ];
 };

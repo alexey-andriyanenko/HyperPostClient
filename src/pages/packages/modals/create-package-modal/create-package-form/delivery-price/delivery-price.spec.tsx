@@ -6,14 +6,16 @@ import userEvent from "@testing-library/user-event";
 import { appTestRender } from "src/shared/tests";
 
 import { DeliveryPrice } from "./delivery-price";
+import { createPackageFormResolver } from "../create-package-form.validator";
 
 describe("DeliveryPrice", () => {
   const Component = () => {
     const form = useForm({
       mode: "onChange",
       defaultValues: {
-        deliveryPrice: "",
+        deliveryPrice: 0,
       },
+      resolver: createPackageFormResolver,
     });
 
     return (
@@ -46,20 +48,6 @@ describe("DeliveryPrice", () => {
     expect(input).toHaveValue(100);
   });
 
-  it("clears input and displays required error", async () => {
-    const { getByTestId, getByText } = await appTestRender(<Component />);
-
-    const field = getByTestId("delivery-price");
-    const input = field.querySelector("input");
-    if (!input) throw new Error("Input not found");
-
-    await userEvent.type(input, "100");
-    await userEvent.clear(input);
-    await userEvent.tab();
-
-    expect(getByText("This field is required")).toBeInTheDocument();
-  });
-
   it("triggers min error", async () => {
     const { getByTestId, getByText } = await appTestRender(<Component />);
 
@@ -69,7 +57,7 @@ describe("DeliveryPrice", () => {
 
     await userEvent.type(input, "4");
 
-    expect(getByText("Minimum delivery price is 5$")).toBeInTheDocument();
+    expect(getByText("Delivery price must be greater than or equal to 5$")).toBeInTheDocument();
   });
 
   it("triggers max error", async () => {
@@ -79,8 +67,8 @@ describe("DeliveryPrice", () => {
     const input = field.querySelector("input");
     if (!input) throw new Error("Input not found");
 
-    await userEvent.type(input, "100000000");
+    await userEvent.type(input, "1000000000");
 
-    expect(getByText("Maximum delivery price is 99999999$")).toBeInTheDocument();
+    expect(getByText("Delivery price must be less than or equal to 99999999$")).toBeInTheDocument();
   });
 });

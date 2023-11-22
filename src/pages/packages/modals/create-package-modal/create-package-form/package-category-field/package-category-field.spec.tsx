@@ -1,6 +1,6 @@
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { act, getByTestId } from "@testing-library/react";
+import { act } from "@testing-library/react";
 import { within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 
@@ -8,15 +8,17 @@ import { appTestRender } from "src/shared/tests";
 import { useStore } from "src/store";
 
 import { PackageCategoryField } from "./package-category-field";
+import { createPackageFormResolver } from "../create-package-form.validator";
 
 jest.useFakeTimers({
   advanceTimers: 50,
 });
 
-describe("CategoryField", () => {
+describe("PackageCategoryField", () => {
   const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     const form = useForm({
       mode: "onChange",
+      resolver: createPackageFormResolver,
     });
     return <FormProvider {...form}>{children}</FormProvider>;
   };

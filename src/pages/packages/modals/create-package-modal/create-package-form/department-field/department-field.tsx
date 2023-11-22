@@ -20,12 +20,6 @@ export const DepartmentField = observer<IDepartmentFieldProps>(
     const { field, fieldState } = useController({
       name,
       control,
-      rules: {
-        required: {
-          value: true,
-          message: "This field is required",
-        },
-      },
     });
 
     const debounce = useDebounce(300);

@@ -8,6 +8,7 @@ import { appTestRender } from "src/shared/tests";
 import { useStore } from "src/store";
 
 import { DepartmentField } from "./department-field";
+import { createPackageFormResolver } from "../create-package-form.validator";
 
 jest.useFakeTimers({
   advanceTimers: 50,
@@ -17,6 +18,7 @@ describe("DepartmentField", () => {
   const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     const form = useForm({
       mode: "onChange",
+      resolver: createPackageFormResolver,
     });
     return <FormProvider {...form}>{children}</FormProvider>;
   };
@@ -138,5 +140,79 @@ describe("DepartmentField", () => {
 
     expect(input).toHaveValue("");
     expect(getByText("This field is required")).toBeInTheDocument();
+  });
+
+  it("displays error message if receiver department equals sender department", async () => {
+    const { findByTestId, getByText } = await appTestRender(
+      <Container>
+        <DepartmentField
+          name="senderDepartmentId"
+          label="Sender Department"
+          placeholder="Select Sender Department"
+          data-testid="sender-department"
+        />
+        <DepartmentField
+          name="receiverDepartmentId"
+          label="Receiver Department"
+          placeholder="Select Receiver Department"
+          data-testid="receiver-department"
+        />
+      </Container>,
+    );
+
+    const senderDepartmentField = (await findByTestId("sender-department")) as HTMLElement;
+    const senderDepartmentInput = senderDepartmentField.querySelector("input");
+    if (!senderDepartmentInput) throw new Error("Input not found");
+
+    const receiverDepartmentField = (await findByTestId("receiver-department")) as HTMLElement;
+    const receiverDepartmentInput = receiverDepartmentField.querySelector("input");
+    if (!receiverDepartmentInput) throw new Error("Input not found");
+
+    await userEvent.click(senderDepartmentInput);
+    await userEvent.click(getByText("#1 - Full Address"));
+
+    await userEvent.click(receiverDepartmentInput);
+    await userEvent.click(getByText("#1 - Full Address"));
+
+    expect(
+      getByText("Receiver Department cannot be equal to Sender Department"),
+    ).toBeInTheDocument();
+  });
+
+  it("displays error message if sender department equals receiver department", async () => {
+    const { findByTestId, getByText } = await appTestRender(
+      <Container>
+        <DepartmentField
+          name="senderDepartmentId"
+          label="Sender Department"
+          placeholder="Select Sender Department"
+          data-testid="sender-department"
+        />
+        <DepartmentField
+          name="receiverDepartmentId"
+          label="Receiver Department"
+          placeholder="Select Receiver Department"
+          data-testid="receiver-department"
+        />
+      </Container>,
+    );
+
+    const senderDepartmentField = (await findByTestId("sender-department")) as HTMLElement;
+    const senderDepartmentInput = senderDepartmentField.querySelector("input");
+    if (!senderDepartmentInput) throw new Error("Input not found");
+
+    const receiverDepartmentField = (await findByTestId("receiver-department")) as HTMLElement;
+    const receiverDepartmentInput = receiverDepartmentField.querySelector("input");
+    if (!receiverDepartmentInput) throw new Error("Input not found");
+
+    await userEvent.click(receiverDepartmentInput);
+    await userEvent.click(getByText("#1 - Full Address"));
+
+    await userEvent.click(senderDepartmentInput);
+    await userEvent.click(getByText("#1 - Full Address"));
+
+    expect(
+      getByText("Sender Department cannot be equal to Receiver Department"),
+    ).toBeInTheDocument();
   });
 });

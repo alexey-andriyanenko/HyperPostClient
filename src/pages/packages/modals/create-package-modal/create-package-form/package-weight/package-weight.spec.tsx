@@ -6,13 +6,15 @@ import userEvent from "@testing-library/user-event";
 import { appTestRender } from "src/shared/tests";
 
 import { PackageWeight } from "./package-weight";
+import { createPackageFormResolver } from "../create-package-form.validator";
 
 describe("PackageWeight", () => {
   const Component = () => {
     const form = useForm({
       defaultValues: {
-        weight: "",
+        weight: 0,
       },
+      resolver: createPackageFormResolver,
       mode: "onChange",
     });
 
@@ -46,20 +48,6 @@ describe("PackageWeight", () => {
     expect(input).toHaveValue(100);
   });
 
-  it("clears value and displays required error", async () => {
-    const { getByTestId, getByText } = await appTestRender(<Component />);
-
-    const field = getByTestId("package-weight");
-    const input = field.querySelector("input");
-    if (!input) throw new Error("Input not found");
-
-    await userEvent.type(input, "100");
-    await userEvent.clear(input);
-
-    expect(input).toHaveValue(null);
-    expect(getByText("This field is required")).toBeInTheDocument();
-  });
-
   it("triggers min value error", async () => {
     const { getByTestId, getByText } = await appTestRender(<Component />);
 
@@ -69,7 +57,7 @@ describe("PackageWeight", () => {
 
     await userEvent.type(input, "0.1");
 
-    expect(getByText("Minimum weight is 0.2 kg")).toBeInTheDocument();
+    expect(getByText("Weight must be greater than 0.2kg")).toBeInTheDocument();
   });
 
   it("triggers max value error", async () => {
@@ -79,8 +67,8 @@ describe("PackageWeight", () => {
     const input = field.querySelector("input");
     if (!input) throw new Error("Input not found");
 
-    await userEvent.type(input, "10000");
+    await userEvent.type(input, "1001");
 
-    expect(getByText("Maximum weight is 9999 kg")).toBeInTheDocument();
+    expect(getByText("Weight must be less than or equal to 1000kg")).toBeInTheDocument();
   });
 });

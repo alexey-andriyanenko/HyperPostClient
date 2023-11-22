@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { TextField, Typography } from "@mui/material";
+import { useController, useFormContext } from "react-hook-form";
 
 import { EMAIL_PATTERN } from "src/constants";
 import { TCheckIfUserExistsRequest, userApiService } from "src/api/user";
 import { useDebounce } from "src/shared/hooks";
 
 import { Container, NamesContainer } from "./user-fields.styles";
-import { useController, useFormContext } from "react-hook-form";
 import { ICreatePackageForm } from "../create-package-form.types";
 
 export interface IUserFieldsProps {
@@ -19,7 +19,7 @@ export const UserFields: React.FC<IUserFieldsProps> = ({ name, title, "data-test
   const debounce = useDebounce(300);
 
   const { control } = useFormContext<ICreatePackageForm>();
-  const { field } = useController({
+  const { field, fieldState } = useController({
     name,
     control,
   });
@@ -54,6 +54,8 @@ export const UserFields: React.FC<IUserFieldsProps> = ({ name, title, "data-test
     }
   };
 
+  // TODO: think about test cases when user clears input
+
   return (
     <Container data-testid={testId}>
       <Typography>{title}</Typography>
@@ -65,6 +67,8 @@ export const UserFields: React.FC<IUserFieldsProps> = ({ name, title, "data-test
         onChange={handleCheckIfUserExists}
         required
         fullWidth
+        error={!!fieldState.error}
+        helperText={fieldState.error?.message}
       />
       <NamesContainer>
         <TextField
@@ -74,6 +78,7 @@ export const UserFields: React.FC<IUserFieldsProps> = ({ name, title, "data-test
           data-testid="first-name"
           required
           fullWidth
+          disabled
         />
         <TextField
           value={userLastName}
@@ -82,6 +87,7 @@ export const UserFields: React.FC<IUserFieldsProps> = ({ name, title, "data-test
           data-testid="last-name"
           required
           fullWidth
+          disabled
         />
       </NamesContainer>
     </Container>

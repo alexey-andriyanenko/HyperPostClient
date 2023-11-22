@@ -11,20 +11,6 @@ export const PackagePrice: React.FC = () => {
     <Controller
       name="packagePrice"
       control={control}
-      rules={{
-        required: {
-          value: true,
-          message: "This field is required",
-        },
-        min: {
-          value: 1,
-          message: "Minimum package price is 1$",
-        },
-        max: {
-          value: 99999999,
-          message: "Maximum package price is 99999999$",
-        },
-      }}
       render={({ field, fieldState }) => (
         <TextField
           {...field}

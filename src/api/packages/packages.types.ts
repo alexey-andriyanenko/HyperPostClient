@@ -7,5 +7,5 @@ export interface ICreatePackageRequest {
   packagePrice: number;
   deliveryPrice: number;
   weight: number;
-  description: string | null;
+  description?: string;
 }

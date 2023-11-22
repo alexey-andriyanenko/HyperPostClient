@@ -10,20 +10,6 @@ export const PackageWeight: React.FC = () => {
     <Controller
       name="weight"
       control={control}
-      rules={{
-        required: {
-          value: true,
-          message: "This field is required",
-        },
-        min: {
-          value: 0.2,
-          message: "Minimum weight is 0.2 kg",
-        },
-        max: {
-          value: 100,
-          message: "Maximum weight is 9999 kg",
-        },
-      }}
       render={({ field, fieldState }) => (
         <TextField
           {...field}

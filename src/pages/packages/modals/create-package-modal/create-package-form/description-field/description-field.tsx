@@ -10,12 +10,6 @@ export const DescriptionField: React.FC = () => {
     <Controller
       name="description"
       control={control}
-      rules={{
-        maxLength: {
-          value: 150,
-          message: "Maximum description length is 150 characters",
-        },
-      }}
       render={({ field, fieldState }) => (
         <TextField
           {...field}
