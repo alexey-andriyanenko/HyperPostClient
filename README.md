@@ -54,11 +54,6 @@ Fix linter
 npm run lint:fix
 ```
 
-// preview of docs in ./docs
-```bash
-npm run docs
-```
-
 **Modular Architecture:**
 ![Modular Architecture](docs/modular-architecture-preview.drawio.png)
 
