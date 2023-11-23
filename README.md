@@ -29,12 +29,12 @@ Project Structure
 
 ## Run application
 
-Local development
+Run locally
 ```bash 
- npm run dev
+npm run dev
 ```
 
-Local development with mocked api
+Run locally with mocked api
 ```bash 
 npm run dev:mock
 ```
