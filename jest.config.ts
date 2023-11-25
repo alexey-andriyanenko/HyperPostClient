@@ -6,7 +6,7 @@ export default {
   rootDir: "./",
   roots: ["<rootDir>"],
   testEnvironment: "jest-environment-jsdom",
-  setupFilesAfterEnv: ["<rootDir>/tests/setupTests.ts"],
+  setupFilesAfterEnv: ["<rootDir>/src/setup-tests.ts"],
   moduleNameMapper: {
     ".css$": "<rootDir>/__mocks__/style-mock.js",
   },

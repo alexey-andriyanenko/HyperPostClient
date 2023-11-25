@@ -54,8 +54,11 @@ Fix linter
 npm run lint:fix
 ```
 
-**Modular Architecture:**
-![Modular Architecture](docs/modular-architecture-preview.drawio.png)
+**Module Dependencies:**
+![Module Dependencies](docs/module-dependencies.drawio.png)
+
+**Project Structure:**
+![Project Structure](docs/modular-architecture-preview.drawio.png)
 
 **Modals Architecture:**
 ![Modals Architecture](docs/modals-architecture-preview.drawio.png)
