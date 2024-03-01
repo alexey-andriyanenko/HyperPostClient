@@ -1,5 +1,5 @@
 import React from "react";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { spyOn } from "jest-mock";
 import { within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
@@ -196,9 +196,11 @@ describe("CreateDepartmentForm", () => {
 
   it("unique constraint validation error is displayed", async () => {
     server.use(
-      rest.post(apiUrl + "/departments", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(departmentUniqueConstraintErrorMock));
-      }),
+      http.post(apiUrl + "/departments", () =>
+        HttpResponse.json(departmentUniqueConstraintErrorMock, {
+          status: 400,
+        }),
+      ),
     );
 
     const onClose = jest.fn();
@@ -230,9 +232,11 @@ describe("CreateDepartmentForm", () => {
 
   it("max length constraint validation error is displayed", async () => {
     server.use(
-      rest.post(apiUrl + "/departments", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(departmentMaxLengthConstraintErrorMock));
-      }),
+      http.post(apiUrl + "/departments", () =>
+        HttpResponse.json(departmentMaxLengthConstraintErrorMock, {
+          status: 400,
+        }),
+      ),
     );
 
     const onClose = jest.fn();
@@ -264,9 +268,11 @@ describe("CreateDepartmentForm", () => {
 
   it("full address validation api error is displayed", async () => {
     server.use(
-      rest.post(apiUrl + "/departments", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(departmentValidationErrorMock));
-      }),
+      http.post(apiUrl + "/departments", () =>
+        HttpResponse.json(departmentValidationErrorMock, {
+          status: 400,
+        }),
+      ),
     );
 
     const onClose = jest.fn();

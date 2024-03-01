@@ -1,5 +1,5 @@
 import React from "react";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 import { server } from "src/msw";
@@ -17,14 +17,16 @@ describe("CreatePackageForm", () => {
 
   beforeEach(() => {
     server.use(
-      rest.get(apiUrl + "/users/check/exists", (req, res, ctx) => {
-        const email = req.url.searchParams.get("email");
+      http.get(apiUrl + "/users/check/exists", ({ request }) => {
+        const url = new URL(request.url);
+        const email = url.searchParams.get("email");
+
         let result;
 
         if (email === senderEmail) result = clientMock;
         if (email === receiverEmail) result = managerMock;
 
-        return res(ctx.json(result));
+        return HttpResponse.json(result);
       }),
     );
   });
@@ -156,9 +158,11 @@ describe("CreatePackageForm", () => {
     const onClose = jest.fn();
 
     server.use(
-      rest.post(apiUrl + "/packages", (req, res, ctx) => {
-        return res(ctx.status(422));
-      }),
+      http.post(apiUrl + "/packages", () =>
+        HttpResponse.json(null, {
+          status: 422,
+        }),
+      ),
     );
 
     const { getByTestId, getByText } = await appTestRender(<CreatePackageForm onClose={onClose} />);

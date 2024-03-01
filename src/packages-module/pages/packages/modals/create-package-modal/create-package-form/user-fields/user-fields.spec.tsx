@@ -1,5 +1,5 @@
 import React from "react";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { FormProvider, useForm } from "react-hook-form";
 import { act } from "@testing-library/react";
 import { within } from "@testing-library/dom";
@@ -110,11 +110,7 @@ describe("UserFields", () => {
   });
 
   it("fills first name and last name with values of found user", async () => {
-    server.use(
-      rest.get(apiUrl + "/users/check/exists", (req, res, ctx) => {
-        return res(ctx.json(clientUserMock));
-      }),
-    );
+    server.use(http.get(apiUrl + "/users/check/exists", () => HttpResponse.json(clientUserMock)));
 
     const { getByTestId } = await appTestRender(
       <Container>
@@ -142,11 +138,7 @@ describe("UserFields", () => {
   });
 
   it("displays an error if receiver user equals sender user", async () => {
-    server.use(
-      rest.get(apiUrl + "/users/check/exists", (req, res, ctx) => {
-        return res(ctx.json(clientUserMock));
-      }),
-    );
+    server.use(http.get(apiUrl + "/users/check/exists", () => HttpResponse.json(clientUserMock)));
 
     const { findByTestId, getByText } = await appTestRender(
       <Container>

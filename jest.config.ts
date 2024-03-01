@@ -6,6 +6,7 @@ export default {
   rootDir: "./",
   roots: ["<rootDir>"],
   testEnvironment: "jest-environment-jsdom",
+  setupFiles: ["<rootDir>/jest.polyfills.js"],
   setupFilesAfterEnv: ["<rootDir>/src/setup-tests.ts"],
   moduleNameMapper: {
     ".css$": "<rootDir>/__mocks__/style-mock.js",
@@ -14,4 +15,7 @@ export default {
     "^.+\\.tsx?$": "@swc/jest",
   },
   resetMocks: true,
+  testEnvironmentOptions: {
+    customExportConditions: [""],
+  },
 };

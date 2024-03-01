@@ -1,5 +1,5 @@
 import React from "react";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 
@@ -7,6 +7,7 @@ import { server } from "src/msw";
 import { appTestRender } from "src/shared-module/tests";
 
 import { LoginViaPhoneForm } from "./login-via-phone-form";
+import { apiUrl } from "../../../../shared-module/constants";
 
 describe("LoginViaPhoneForm", () => {
   it("renders with correct text", async () => {
@@ -89,7 +90,11 @@ describe("LoginViaPhoneForm", () => {
 
   it("form becomes invalid after submit with invalid credentials", async () => {
     server.use(
-      rest.post("http://localhost:8000/users/login/phone", (req, res, ctx) => res(ctx.status(401))),
+      http.post(apiUrl + "/users/login/phone", () =>
+        HttpResponse.json(null, {
+          status: 401,
+        }),
+      ),
     );
 
     const { getByTestId } = await appTestRender(<LoginViaPhoneForm />, false);

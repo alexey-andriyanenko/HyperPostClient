@@ -1,19 +1,11 @@
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { departmentsMock } from "./departments.mock";
 
 export const createDepartmentsHandlers = (baseUrl: string) => {
   return [
-    rest.get(baseUrl + "/departments", (req, res, ctx) =>
-      res(ctx.status(200), ctx.json(departmentsMock)),
-    ),
-    rest.post(baseUrl + "/departments", (req, res, ctx) =>
-      res(ctx.status(201), ctx.json(departmentsMock)),
-    ),
-    rest.put(baseUrl + "/departments/:id", (req, res, ctx) =>
-      res(ctx.status(200), ctx.json(departmentsMock)),
-    ),
-    rest.delete(baseUrl + "/departments/:id", (req, res, ctx) =>
-      res(ctx.status(204), ctx.text("")),
-    ),
+    http.get(baseUrl + "/departments", () => HttpResponse.json(departmentsMock)),
+    http.post(baseUrl + "/departments", () => HttpResponse.json(departmentsMock)),
+    http.put(baseUrl + "/departments/:id", () => HttpResponse.json(departmentsMock)),
+    http.delete(baseUrl + "/departments/:id", () => HttpResponse.text("")),
   ];
 };

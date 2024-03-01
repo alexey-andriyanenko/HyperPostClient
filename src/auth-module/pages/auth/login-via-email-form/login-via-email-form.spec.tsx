@@ -1,12 +1,13 @@
 import React from "react";
 import { within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 
 import { appTestRender } from "src/shared-module/tests";
 import { server } from "src/msw";
 
 import { LoginViaEmailForm } from "./login-via-email-form";
+import { apiUrl } from "../../../../shared-module/constants";
 
 describe("LoginViaEmailForm", () => {
   it("renders with correct text", async () => {
@@ -96,7 +97,11 @@ describe("LoginViaEmailForm", () => {
 
   it("form becomes invalid after submit with invalid credentials", async () => {
     server.use(
-      rest.post("http://localhost:8000/users/login/email", (req, res, ctx) => res(ctx.status(401))),
+      http.post(apiUrl + "/users/login/email", () =>
+        HttpResponse.json(null, {
+          status: 401,
+        }),
+      ),
     );
 
     const { getByTestId } = await appTestRender(<LoginViaEmailForm />, false);

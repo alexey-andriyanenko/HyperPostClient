@@ -1,7 +1,7 @@
 import React from "react";
 import userEvent from "@testing-library/user-event";
 import { within } from "@testing-library/dom";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 
 import { server } from "src/msw";
 import { appTestRender } from "src/shared-module/tests";
@@ -115,9 +115,11 @@ describe("CreatePackageCategoryForm", () => {
 
   it("displays api error message if it is returned", async () => {
     server.use(
-      rest.post(apiUrl + "/package/categories", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(packageCategoryUniqueConstraintErrorMock));
-      }),
+      http.post(apiUrl + "/package/categories", () =>
+        HttpResponse.json(packageCategoryUniqueConstraintErrorMock, {
+          status: 400,
+        }),
+      ),
     );
 
     const { findByTestId } = await appTestRender(<CreatePackageCategoryForm onClose={jest.fn} />);
@@ -138,9 +140,11 @@ describe("CreatePackageCategoryForm", () => {
 
   it("displays api validation error if it is returned", async () => {
     server.use(
-      rest.post(apiUrl + "/package/categories", (req, res, ctx) => {
-        return res(ctx.status(400), ctx.json(packageCategoryValidationErrorMock));
-      }),
+      http.post(apiUrl + "/package/categories", () =>
+        HttpResponse.json(packageCategoryValidationErrorMock, {
+          status: 400,
+        }),
+      ),
     );
 
     const { findByTestId } = await appTestRender(<CreatePackageCategoryForm onClose={jest.fn} />);
